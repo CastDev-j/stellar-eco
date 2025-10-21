@@ -28,7 +28,7 @@ const SearchImageAndVideo = () => {
         queryKey: ["NIAV", query, page] as [string, string, number],
       }),
     enabled: query.length > 0,
-    placeholderData: (prev) => prev, // keep previous data to avoid flashes
+    placeholderData: (prev) => prev,
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });

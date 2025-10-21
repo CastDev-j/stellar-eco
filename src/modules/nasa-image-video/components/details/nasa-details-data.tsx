@@ -1,5 +1,6 @@
 "use client";
 
+import FavoriteButton from "@/components/favorite-button";
 import type { NASAImageAndVideoByID } from "../../interfaces/nasa-image-and-video-by-id";
 import NASADetailsNotFound from "./nasa-details-not-found";
 import Button from "@/components/ui/button";
@@ -10,9 +11,14 @@ import {
   IoCalendarOutline,
   IoLocationOutline,
 } from "react-icons/io5";
+import { ImageLibraryReference } from "@/interfaces/favorite";
+import { useAuth } from "@clerk/nextjs";
+import { useState } from "react";
+import { toggleFavorite } from "@/actions/favorites/toggle-favorite";
 
 interface Props {
   data: NASAImageAndVideoByID;
+  initialState: number;
 }
 
 const pickImageHref = (
@@ -36,8 +42,10 @@ const pickImageHref = (
   return links[0]?.href;
 };
 
-const NasaDetailsData = ({ data }: Props) => {
+const NasaDetailsData = ({ data, initialState }: Props) => {
+  const [isFavorite, setIsFavorite] = useState(initialState);
   const router = useRouter();
+  const { userId } = useAuth();
 
   const handleGoBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1) {
@@ -71,15 +79,38 @@ const NasaDetailsData = ({ data }: Props) => {
 
   const entry = items[0]?.data?.[0];
   const img = pickImageHref(items[0]?.links);
+  const nasaId = entry?.nasa_id || "";
+
+  const handleFavoriteChange = async (isFavorite: number) => {
+    if (userId) {
+      const newState = await toggleFavorite({
+        type: "image_library",
+        userId,
+        nasaId,
+        newStatus: isFavorite,
+      });
+
+      setIsFavorite(newState.isFavorite ? 1 : 0);
+    } else {
+      //TODO: manejar logica local
+    }
+  };
 
   return (
     <div className="min-h-screen">
       <div className="border-b border-stone-200">
-        <div className="container mx-auto py-4">
+        <div className="container flex justify-between py-4">
           <Button onClick={handleGoBack} variant="ghost" className="gap-2">
             <IoArrowBack className="size-4" />
             Volver atrás
           </Button>
+          <FavoriteButton
+            type={"image_library"}
+            referenceData={{ nasaId: nasaId } as ImageLibraryReference}
+            userId={userId}
+            onFavoriteChange={handleFavoriteChange}
+            isFavorite={isFavorite}
+          />
         </div>
       </div>
 

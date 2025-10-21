@@ -11,9 +11,9 @@ import { sleep } from "@/lib/sleep";
 interface Props {
   type: NewFavorite["type"];
   referenceData: ReferenceData;
-  userId: string;
-  initialIsFavorite?: number | null;
-  onFavoriteChange?: (isFavorite: boolean) => void;
+  userId: string | null | undefined;
+  isFavorite?: number | null;
+  onFavoriteChange?: (isFavorite: number) => void;
   showText?: boolean;
 }
 
@@ -22,12 +22,11 @@ const FavoriteButton = (props: Props) => {
     type,
     referenceData,
     userId,
-    initialIsFavorite = null,
+    isFavorite = null,
     onFavoriteChange,
     showText = true,
   } = props;
 
-  const [isFavorite, setIsFavorite] = useState(initialIsFavorite === 1);
   const [isLoading, setIsLoading] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const starRef = useRef<HTMLDivElement>(null);
@@ -159,8 +158,7 @@ const FavoriteButton = (props: Props) => {
 
     await sleep(400);
 
-    const newFavoriteState = !isFavorite;
-    setIsFavorite(newFavoriteState);
+    const newFavoriteState = isFavorite == 1 ? 0 : 1;
     onFavoriteChange?.(newFavoriteState);
 
     if (newFavoriteState) {

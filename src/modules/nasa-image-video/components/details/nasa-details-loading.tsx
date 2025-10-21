@@ -4,8 +4,9 @@ const NasaDetailsLoading = () => {
   return (
     <div className="min-h-screen">
       <div className="border-b border-stone-200">
-        <div className="container mx-auto py-4">
+        <div className="container flex justify-between py-4">
           <Skeleton className="h-10 w-32 rounded-lg" />
+          <Skeleton className="h-10 w-48 rounded-full" />
         </div>
       </div>
 

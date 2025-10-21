@@ -2,7 +2,6 @@ import { Container } from "@/components/ui/container";
 import { Paragraph } from "@/components/ui/paragraph";
 import { Title } from "@/components/ui/title";
 import { Highlight } from "@/components/ui/highlight";
-import { sleep } from "@/lib/sleep";
 
 const EonetPage = async () => {
   return (

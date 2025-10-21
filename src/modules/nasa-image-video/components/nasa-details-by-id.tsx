@@ -8,9 +8,10 @@ import NasaDetailsError from "./details/nasa-details-error";
 
 interface Props {
   nasaId: string;
+  initialState: number;
 }
 
-const NasaDetailsById = ({ nasaId }: Props) => {
+const NasaDetailsById = ({ nasaId, initialState }: Props) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["NIAVID", nasaId],
     queryFn: () =>
@@ -24,7 +25,9 @@ const NasaDetailsById = ({ nasaId }: Props) => {
       {error && (
         <NasaDetailsError error={error as Error} onRetry={() => refetch()} />
       )}
-      {data && !isLoading && <NasaDetailsData data={data} />}
+      {data && !isLoading && (
+        <NasaDetailsData data={data} initialState={initialState} />
+      )}
     </>
   );
 };

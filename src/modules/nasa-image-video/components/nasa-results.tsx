@@ -70,9 +70,7 @@ const NASAResults: React.FC<Props> = ({ data }) => {
 
           return (
             <Link
-              href={`/nasa-image-video/${encodeURIComponent(
-                String(itemData.nasa_id)
-              )}`}
+              href={`/nasa/${encodeURIComponent(String(itemData.nasa_id))}`}
               key={itemData.nasa_id || index}
               className="bg-white rounded-sm  overflow-hidden duration-300 border border-stone-200/50"
             >

@@ -18,7 +18,7 @@ export const authors = [
   "Angel González Mejia",
   "Gibran Aron Herrera Herrera",
 ];
-export const githubRepo = "https://github.com/CastDev-j/ecos-estelares";
+export const githubRepo = "https://github.com/CastDev-j/stellar-eco";
 export const SITE_NAME = "Ecos Estelares";
 
 export const itemsPerPageOptions = {

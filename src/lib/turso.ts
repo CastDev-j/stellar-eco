@@ -2,7 +2,6 @@ import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "../db/schema";
 
-// Ensure this module is only used on the server
 if (typeof window !== "undefined") {
   throw new Error("lib/turso can only be imported on the server");
 }

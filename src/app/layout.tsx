@@ -10,6 +10,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.svg" />
+      </head>
       <body className="flex flex-col justify-between min-h-screen">
         <AppProviders>
           <Header />

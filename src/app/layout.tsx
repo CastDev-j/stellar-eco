@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "Ecos Estelares — Explora el universo con imágenes, videos y datos de la NASA.",
     images: [
       {
-        url: "/og-1200x630.png", // Next.js lo convertirá a URL absoluta
+        url: "/og-1200x630.png",
         width: 1200,
         height: 630,
         alt: "Ecos Estelares — vista previa",

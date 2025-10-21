@@ -18,8 +18,6 @@ const MarsRoverPage = () => {
           Perseverance.
         </Paragraph>
       </section>
-
-      <NASAResultsLoading />
     </Container>
   );
 };

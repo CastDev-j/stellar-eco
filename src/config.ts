@@ -9,6 +9,7 @@ export const routes: Route[] = [
   { label: "NASA Image and Video Library", path: "/nasa" },
   { label: "Mars Rover Photos", path: "/mars" },
   { label: "EONET", path: "/eonet" },
+  { label: "Favoritos", path: "favorites" },
 ];
 
 export const authors = [

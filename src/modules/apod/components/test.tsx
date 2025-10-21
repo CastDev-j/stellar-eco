@@ -50,6 +50,11 @@ const APODTEST = () => {
           </div>
         </li>
       ))}
+
+      <Title variant="h3" className="text-red-500">
+        Esta Funcionalidad solo está disponible para usuarios registrados en la
+        plataforma de momento
+      </Title>
     </ol>
   );
 };

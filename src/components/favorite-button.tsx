@@ -33,7 +33,6 @@ const FavoriteButton = (props: Props) => {
   const starRef = useRef<HTMLDivElement>(null);
   const sparklesRef = useRef<HTMLDivElement>(null);
 
-  // Animación cuando se marca como favorito
   useGSAP(() => {
     if (starRef.current && isFavorite) {
       const tl = gsap.timeline();
@@ -69,8 +68,8 @@ const FavoriteButton = (props: Props) => {
     const sparkles = [];
     const colors = ["#FFD700", "#FFED4E", "#FFF9C4", "#FFA726"];
 
-    for (let i = 0; i < 24; i++) {
-      const angle = (i / 24) * Math.PI * 2;
+    for (let i = 0; i < 12; i++) {
+      const angle = (i / 12) * Math.PI * 2;
       const distance = 70;
       const sparkle = document.createElement("div");
 

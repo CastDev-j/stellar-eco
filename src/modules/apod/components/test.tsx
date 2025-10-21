@@ -1,10 +1,8 @@
 "use client";
 
 import { getAllFavorites } from "@/actions/favorites/get-all";
-import FavoriteButton from "@/components/favorite-button";
 import { Paragraph } from "@/components/ui/paragraph";
 import { Title } from "@/components/ui/title";
-import { Favorite, ReferenceData } from "@/interfaces/favorite";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 

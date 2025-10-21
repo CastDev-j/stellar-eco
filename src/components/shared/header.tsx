@@ -17,10 +17,11 @@ import {
 } from "@clerk/clerk-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Skeleton from "../ui/skeleton";
 
 const Header: React.FC = () => {
   const pathname = usePathname();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
   const [open, setOpen] = useState(false);
   const mobileMenuRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -99,37 +100,40 @@ const Header: React.FC = () => {
               ))}
             </nav>
 
-            <div className="flex items-center">
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button
-                    className={cn(
-                      "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
-                      "bg-indigo-700 text-stone-200 hover:bg-indigo-600",
-                      "border border-indigo-600"
-                    )}
-                  >
-                    Iniciar Sesión
-                  </button>
-                </SignInButton>
-              </SignedOut>
+            {!isLoaded ? (
+              <div className="flex items-center">
+                <Skeleton className="w-7 h-7 rounded-full" />
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button
+                      className={cn(
+                        "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                        "bg-indigo-700 text-stone-200 hover:bg-indigo-600",
+                        "border border-indigo-600"
+                      )}
+                    >
+                      Iniciar Sesión
+                    </button>
+                  </SignInButton>
+                </SignedOut>
 
-              <SignedIn>
-                <div className="flex items-center gap-2">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-7 h-7",
-                        userButtonTrigger: "hover:bg-stone-700",
-                      },
-                    }}
-                    fallback={
-                      <div className="w-7 h-7 bg-stone-700 rounded-full" />
-                    }
-                  />
-                </div>
-              </SignedIn>
-            </div>
+                <SignedIn>
+                  <div className="flex items-center gap-2">
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-7 h-7",
+                          userButtonTrigger: "hover:bg-stone-700",
+                        },
+                      }}
+                    />
+                  </div>
+                </SignedIn>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
@@ -156,19 +160,22 @@ const Header: React.FC = () => {
         <div className="px-2 pt-2 pb-4 space-y-1">
           {isSignedIn && (
             <div className="py-2 flex items-center justify-end px-3">
-              <SignedIn>
-                <UserButton
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-7 h-7",
-                      userButtonTrigger: "hover:bg-stone-700",
-                    },
-                  }}
-                  fallback={
-                    <div className="w-7 h-7 bg-stone-800 rounded-full" />
-                  }
-                />
-              </SignedIn>
+              {!isLoaded ? (
+                <div className="flex items-center">
+                  <Skeleton className="w-7 h-7 " />
+                </div>
+              ) : (
+                <SignedIn>
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-7 h-7",
+                        userButtonTrigger: "hover:bg-stone-700",
+                      },
+                    }}
+                  />
+                </SignedIn>
+              )}
             </div>
           )}
           {routes.map((r) => (
@@ -187,19 +194,25 @@ const Header: React.FC = () => {
           ))}
 
           <div className="px-3 py-2">
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button
-                  className={cn(
-                    "w-full px-4 py-2 rounded-md text-sm font-medium transition-colors",
-                    "bg-stone-900 text-stone-200 hover:bg-stone-800",
-                    "border border-stone-800"
-                  )}
-                >
-                  Iniciar Sesión
-                </button>
-              </SignInButton>
-            </SignedOut>
+            {!isLoaded ? (
+              <div className="flex items-center justify-center py-2">
+                <Skeleton className="w-24 h-9 bg-stone-700/50 rounded-md animate-pulse" />
+              </div>
+            ) : (
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button
+                    className={cn(
+                      "w-full px-4 py-2 rounded-md text-sm font-medium transition-colors",
+                      "bg-stone-900 text-stone-200 hover:bg-stone-800",
+                      "border border-stone-800"
+                    )}
+                  >
+                    Iniciar Sesión
+                  </button>
+                </SignInButton>
+              </SignedOut>
+            )}
           </div>
         </div>
       </div>

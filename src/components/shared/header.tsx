@@ -16,11 +16,13 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Header: React.FC = () => {
+  const pathname = usePathname();
+  const { isSignedIn } = useAuth();
   const [open, setOpen] = useState(false);
   const mobileMenuRef = React.useRef<HTMLDivElement | null>(null);
-  const { isSignedIn } = useAuth();
 
   useGSAP(() => {
     if (!mobileMenuRef.current) return;
@@ -89,7 +91,7 @@ const Header: React.FC = () => {
                   className={cn(
                     "text-sm font-medium transition-colors",
                     "text-stone-400 hover:text-stone-200",
-                    true && "text-white"
+                    pathname === r.path && "text-white"
                   )}
                 >
                   {r.label}
@@ -177,7 +179,7 @@ const Header: React.FC = () => {
               className={cn(
                 "block px-3 py-3 rounded-md text-base font-medium transition-colors",
                 "text-stone-300 hover:text-white hover:bg-stone-900",
-                true && "text-white bg-stone-900"
+                pathname === r.path && "text-white bg-stone-900"
               )}
             >
               {r.label}

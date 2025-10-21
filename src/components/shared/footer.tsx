@@ -1,10 +1,14 @@
+"use client";
 import React from "react";
 import { FiGithub } from "react-icons/fi";
 import { authors, githubRepo, routes, SITE_NAME } from "../../config";
 import { cn } from "@/lib/cn";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Footer: React.FC = () => {
+  const pathname = usePathname();
+
   return (
     <footer className="mt-auto bg-stone-950 border-t border-stone-800 text-stone-400">
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-10">
@@ -33,7 +37,7 @@ const Footer: React.FC = () => {
                   <Link
                     className={cn(
                       "transition-colors hover:text-stone-200",
-                      true && "text-stone-200"
+                      pathname === r.path && "text-stone-200"
                     )}
                     href={r.path}
                   >

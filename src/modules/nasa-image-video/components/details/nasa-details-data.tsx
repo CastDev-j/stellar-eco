@@ -75,7 +75,7 @@ const NasaDetailsData = ({ data }: Props) => {
   return (
     <div className="min-h-screen">
       <div className="border-b border-stone-200">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto py-4">
           <Button onClick={handleGoBack} variant="ghost" className="gap-2">
             <IoArrowBack className="size-4" />
             Volver atrás
@@ -83,7 +83,7 @@ const NasaDetailsData = ({ data }: Props) => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto py-8 md:py-12">
         <article className="max-w-5xl mx-auto">
           {img && (
             <div className="w-full aspect-video md:aspect-21/9 rounded-sm overflow-hidden mb-8">

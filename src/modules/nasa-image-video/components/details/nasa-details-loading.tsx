@@ -4,12 +4,12 @@ const NasaDetailsLoading = () => {
   return (
     <div className="min-h-screen">
       <div className="border-b border-stone-200">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto py-4">
           <Skeleton className="h-10 w-32 rounded-lg" />
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto py-8 md:py-12">
         <article className="max-w-5xl mx-auto animate-pulse">
           <Skeleton className="w-full aspect-video md:aspect-21/9 rounded-sm mb-8" />
 

@@ -9,8 +9,8 @@ interface Props {
 const NASAResultsLoading: React.FC<Props> = ({ itemCount = 9 }) => {
   return (
     <Container className="space-y-8" padding={false}>
-      <section className="space-y-4 text-center mt-6">
-        <Skeleton className="w-72 h-9 rounded-sm mx-auto" rounded={false} />
+      <section className="space-y-4 mt-6">
+        <Skeleton className="w-72 h-9 rounded-sm" rounded={false} />
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

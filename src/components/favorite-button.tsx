@@ -180,8 +180,8 @@ const FavoriteButton = (props: Props) => {
       variant="ghost"
       className={`relative flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 overflow-visible ${
         isFavorite
-          ? "hover:bg-yellow-50 bg-yellow-50 text-yellow-400 ring-yellow-200 shadow-sm hover:ring-2 hover:ring-offset-2"
-          : "bg-stone-50 hover:bg-stone-50 text-stone-400 ring-stone-200  border border-stone-200/50 hover:ring-2 hover:ring-offset-2"
+          ? "hover:bg-yellow-50 bg-yellow-50 text-yellow-400 ring-yellow-200 focus:ring-yellow-200 shadow-sm hover:ring-2 hover:ring-offset-2"
+          : "bg-stone-50 hover:bg-stone-50 text-stone-400 ring-stone-200 focus:ring-stone-200 border border-stone-200/50 hover:ring-2 hover:ring-offset-2"
       } ${isLoading ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
       aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
     >

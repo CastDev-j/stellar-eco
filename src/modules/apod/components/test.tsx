@@ -34,15 +34,22 @@ const APODTEST = () => {
   return (
     <ol className="space-y-4">
       {favorites.map((item, index) => (
-        <li key={item.id}>
-          {index + 1}.- {item.id} - {JSON.stringify(item.referenceData)}
-          <FavoriteButton
-            type={item.type}
-            referenceData={item.referenceData as ReferenceData}
-            userId={item.userId}
-            initialIsFavorite={item.isFavorite}
-            onFavoriteChange={handleFavoriteChange}
-          />
+        <li key={item.id} className="flex items-start gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="text-sm text-gray-700 truncate">
+              {index + 1}.- {item.id} - {JSON.stringify(item.referenceData)}
+            </div>
+          </div>
+
+          <div className="shrink-0">
+            <FavoriteButton
+              type={item.type}
+              referenceData={item.referenceData as ReferenceData}
+              userId={item.userId}
+              initialIsFavorite={item.isFavorite}
+              onFavoriteChange={handleFavoriteChange}
+            />
+          </div>
         </li>
       ))}
     </ol>

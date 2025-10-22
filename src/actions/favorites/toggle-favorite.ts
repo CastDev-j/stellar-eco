@@ -29,7 +29,7 @@ interface ToggleMarsRoverProps extends BaseToggleProps {
 
 interface ToggleEpicProps extends BaseToggleProps {
   type: "epic";
-  eventId: string;
+  date: string;
 }
 
 type ToggleFavoriteProps =
@@ -63,7 +63,7 @@ export async function toggleFavorite(
       );
 
     case "epic":
-      return upsertEpicFavorite(userId, props.eventId, newStatus);
+      return upsertEpicFavorite(userId, props.date, newStatus);
 
     default:
       throw new Error("Tipo de referencia no válido");
@@ -161,10 +161,10 @@ const upsertMarsRoverFavorite = async (
 
 const upsertEpicFavorite = async (
   userId: string,
-  eventId: string,
+  date: string,
   newStatus: number
 ): Promise<Favorite> => {
-  const referenceData = JSON.stringify({ eventId });
+  const referenceData = JSON.stringify({ date });
 
   const [result] = await db
     .insert(favoritesTable)

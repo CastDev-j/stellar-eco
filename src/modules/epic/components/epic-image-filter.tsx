@@ -13,7 +13,11 @@ import EPICResultsLoading from "./epic-results-loading";
 import EPICDefaultComponent from "./epic-default-component";
 import EPICResults from "./epic-results";
 
-const EPICImageFilter = () => {
+interface Props {
+  initialState?: number;
+}
+
+const EPICImageFilter = ({ initialState }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -37,7 +41,7 @@ const EPICImageFilter = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedDate) return;
-    router.push(`?date=${selectedDate}&page=1`);
+    router.push(`?date=${selectedDate}`);
   };
 
   const handleClearFilters = () => {
@@ -88,7 +92,13 @@ const EPICImageFilter = () => {
 
         {isLoading && <EPICResultsLoading />}
 
-        {data && <EPICResults data={data} />}
+        {data && (
+          <EPICResults
+            data={data}
+            date={selectedDate}
+            initialState={initialState}
+          />
+        )}
 
         {error && <QueryError error={error} onRetry={handleRetry} />}
       </section>

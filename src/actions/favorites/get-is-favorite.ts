@@ -28,7 +28,7 @@ interface GetMarsRoverFavoriteProps extends BaseGetFavoriteProps {
 
 interface GetEpicFavoriteProps extends BaseGetFavoriteProps {
   type: "epic";
-  eventId: string;
+  date: string;
 }
 
 type GetIsFavoriteProps =
@@ -58,7 +58,7 @@ export async function getIsFavorite(
       });
 
     case "epic":
-      return getEpicFavoriteStatus(userId, props.eventId);
+      return getEpicFavoriteStatus(userId, props.date);
 
     default:
       return 0;
@@ -135,9 +135,9 @@ const getMarsRoverFavoriteStatus = async (
 
 const getEpicFavoriteStatus = async (
   userId: string,
-  eventId: string
+  date: string
 ): Promise<number> => {
-  const referenceData = JSON.stringify({ eventId });
+  const referenceData = JSON.stringify({ date });
 
   const result = await db
     .select({ isFavorite: favoritesTable.isFavorite })

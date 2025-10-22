@@ -10,9 +10,8 @@ import { cn } from "@/lib/cn";
 import EPICNotFound from "./epic-not-found";
 import { EPICImage } from "../interfaces/epic-image";
 import FavoriteButton from "@/components/favorite-button";
-import { EPICReference } from "@/interfaces/favorite";
-import { useSearchParams } from "next/navigation";
-import Skeleton from "@/components/ui/skeleton";
+import { useAuth } from "@clerk/nextjs";
+import { toggleFavorite } from "@/actions/favorites/toggle-favorite";
 
 interface Props {
   data: {
@@ -20,16 +19,16 @@ interface Props {
       items?: EPICImage[];
     };
   };
+  date: string;
+  initialState?: number;
 }
 
-const EPICResults: React.FC<Props> = ({ data }) => {
-  const searchParams = useSearchParams();
-
-  const dateParam = searchParams.get("date") || "";
+const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
   const items = data?.collection?.items || [];
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isFavorite, setIsFavorite] = useState<number>(0);
+  const [isFavorite, setIsFavorite] = useState<number>(initialState || 0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const { userId } = useAuth();
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -83,7 +82,20 @@ const EPICResults: React.FC<Props> = ({ data }) => {
     return <EPICNotFound />;
   }
 
-  const handleFavoriteChange = (isFavorite: number) => {};
+  const handleFavoriteChange = async (isFavorite: number) => {
+    if (userId) {
+      const newState = await toggleFavorite({
+        type: "epic",
+        userId,
+        newStatus: isFavorite,
+        date,
+      });
+
+      setIsFavorite(newState.isFavorite ? 1 : 0);
+    } else {
+      //TODO: manejar logica local
+    }
+  };
 
   return (
     <Container className="space-y-6" padding={false}>

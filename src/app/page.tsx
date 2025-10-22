@@ -6,9 +6,7 @@ import Hero from "@/modules/index/components/hero";
 export default function Home() {
   return (
     <Container className="space-y-12" animated={false}>
-      {/*Hero */}
       <Hero />
-      {/* Header */}
       <section className="space-y-4 min-h-[80vh] flex items-center justify-center ">
         <div className="-mt-16 flex flex-col gap-4">
           <Title

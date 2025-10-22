@@ -12,7 +12,6 @@ import { Container } from "@/components/ui/container";
 const ComponentsPage = () => {
   return (
     <Container className="space-y-12">
-      {/* Header */}
       <section className="space-y-4">
         <Title variant="h1" align="center">
           Explorador Cosmos
@@ -23,7 +22,6 @@ const ComponentsPage = () => {
         </Paragraph>
       </section>
 
-      {/* Titles */}
       <section className="space-y-4">
         <Title variant="h2">Títulos Principales</Title>
         <div className="space-y-3 pl-4">
@@ -33,7 +31,6 @@ const ComponentsPage = () => {
         </div>
       </section>
 
-      {/* Subtitles */}
       <section className="space-y-4">
         <Title variant="h2">Subtítulos Secundarios</Title>
         <div className="space-y-3 pl-4">
@@ -43,7 +40,6 @@ const ComponentsPage = () => {
         </div>
       </section>
 
-      {/* Paragraphs */}
       <section className="space-y-4">
         <Title variant="h2">Párrafos y Texto</Title>
         <div className="space-y-3 pl-4">
@@ -63,7 +59,6 @@ const ComponentsPage = () => {
         </div>
       </section>
 
-      {/* Labels */}
       <section className="space-y-4">
         <Title variant="h2">Formularios</Title>
         <div className="space-y-4 pl-4">
@@ -119,7 +114,6 @@ const ComponentsPage = () => {
         </div>
       </section>
 
-      {/* Quotes */}
       <section className="space-y-4">
         <Title variant="h2">Citas Destacadas</Title>
         <div className="space-y-3 pl-4">
@@ -133,7 +127,6 @@ const ComponentsPage = () => {
         </div>
       </section>
 
-      {/* Highlights */}
       <section className="space-y-4">
         <Title variant="h2">Texto Resaltado</Title>
         <Paragraph>
@@ -145,7 +138,6 @@ const ComponentsPage = () => {
         </Paragraph>
       </section>
 
-      {/* Lists */}
       <section className="space-y-4">
         <Title variant="h2">Listas Personalizadas</Title>
         <div className="space-y-4 pl-4">
@@ -179,7 +171,6 @@ const ComponentsPage = () => {
         </div>
       </section>
 
-      {/* Caption */}
       <section className="space-y-4">
         <Title variant="h2">Pies de Imagen</Title>
         <div className="space-y-3 pl-4">

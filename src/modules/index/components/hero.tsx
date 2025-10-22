@@ -104,7 +104,6 @@ const AnimatedEarth = () => {
 
   return (
     <group>
-      {/* Earth */}
       <mesh ref={earthRef}>
         <sphereGeometry args={[2, 64, 64]} />
         <shaderMaterial
@@ -114,7 +113,6 @@ const AnimatedEarth = () => {
         />
       </mesh>
 
-      {/* Atmosphere */}
       <mesh ref={atmosphereRef} scale={1.035}>
         <sphereGeometry args={[2, 64, 64]} />
         <shaderMaterial

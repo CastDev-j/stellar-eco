@@ -59,7 +59,6 @@ const NASADefaultComponent = () => {
         </div>
       </div>
 
-      {/* Título y descripción */}
       <div ref={titleRef} className="space-y-3">
         <Title variant="h2" align="center">
           Explora el Universo

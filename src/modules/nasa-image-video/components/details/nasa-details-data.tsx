@@ -11,11 +11,11 @@ import {
   IoCalendarOutline,
   IoLocationOutline,
 } from "react-icons/io5";
-import { ImageLibraryReference } from "@/interfaces/favorite";
 import { useAuth } from "@clerk/nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toggleFavorite } from "@/actions/favorites/toggle-favorite";
 import { toggleFavoriteInLocalStorage } from "@/actions/favorites-ls/toggle-favorite";
+import { getIsFavoriteFromLocalStorage } from "@/actions/favorites-ls/get-is-favorite";
 
 interface Props {
   data: NASAImageAndVideoByID;
@@ -103,6 +103,21 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
       setIsFavorite(newState.isFavorite ? 1 : 0);
     }
   };
+
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      if (!userId) {
+        const favoriteStatus = await getIsFavoriteFromLocalStorage({
+          userId: "guest",
+          type: "image_library",
+          nasaId,
+        });
+
+        setIsFavorite(favoriteStatus);
+      }
+    };
+    checkFavoriteStatus();
+  }, [nasaId]);
 
   return (
     <div className="min-h-screen">

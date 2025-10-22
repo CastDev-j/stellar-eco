@@ -56,7 +56,7 @@ const EPICImageFilter = ({ initialState }: Props) => {
   const hasActiveFilter = dateParam.trim() !== "";
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8" padding={false}>
       <section className="max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Input

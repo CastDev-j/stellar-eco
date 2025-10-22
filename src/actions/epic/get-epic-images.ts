@@ -7,8 +7,6 @@ export const fetchEPICImages = async (date: string) => {
   try {
     const apiUrl = `${EPIC_API_URL}/${date}?api_key=${NASA_API_KEY}`;
 
-    console.log(apiUrl);
-
     const response = await fetch(apiUrl);
 
     if (!response.ok) {

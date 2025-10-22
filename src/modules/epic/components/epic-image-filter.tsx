@@ -58,7 +58,7 @@ const EPICImageFilter = ({ initialState }: Props) => {
   return (
     <Container className="space-y-8" padding={false}>
       <section className="max-w-4xl mx-auto">
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-4">
           <Input
             id="date"
             type="date"
@@ -70,20 +70,22 @@ const EPICImageFilter = ({ initialState }: Props) => {
             placeholder="Selecciona una fecha"
           />
 
-          <Button type="submit" disabled={!selectedDate} className="px-6">
-            Buscar
-          </Button>
-
-          {hasActiveFilter && (
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={handleClearFilters}
-              className="px-4"
-            >
-              <IoMdClose />
+          <div className="flex items-center gap-2">
+            <Button type="submit" disabled={!selectedDate} className="px-6">
+              Buscar
             </Button>
-          )}
+
+            {hasActiveFilter && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={handleClearFilters}
+                className="px-4"
+              >
+                <IoMdClose />
+              </Button>
+            )}
+          </div>
         </form>
       </section>
 

@@ -1,4 +1,3 @@
-import { sleep } from "@/lib/sleep";
 import { NASAImageAndVideoByID } from "@/modules/nasa-image-video/interfaces/nasa-image-and-video-by-id";
 
 const NasaImageAndVideoAPIBaseURL = `https://images-api.nasa.gov/search`;
@@ -9,8 +8,6 @@ export async function actionGetByNasaId({
   queryKey: [string, string];
 }): Promise<NASAImageAndVideoByID> {
   const [, nasaId] = queryKey;
-
-  await sleep(1000);
 
   const response = await fetch(
     `${NasaImageAndVideoAPIBaseURL}?nasa_id=${nasaId}`

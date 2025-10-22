@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 
 const FavoritesLoading = () => {
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8" padding={false}>
       <section className="space-y-2">
         <Skeleton className="h-10 w-80 mx-auto rounded-lg" />
         <Skeleton className="h-6 w-64 mx-auto rounded-lg" />

@@ -15,7 +15,6 @@ import { toggleFavorite } from "@/actions/favorites/toggle-favorite";
 import Button from "@/components/ui/button";
 import { IoArrowBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import Skeleton from "@/components/ui/skeleton";
 import { toggleFavoriteInLocalStorage } from "@/actions/favorites-ls/toggle-favorite";
 import { getIsFavoriteFromLocalStorage } from "@/actions/favorites-ls/get-is-favorite";
 

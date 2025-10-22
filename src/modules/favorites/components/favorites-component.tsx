@@ -53,7 +53,7 @@ const FavoritesComponent = () => {
     favorites.imageLibrary.length;
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8" padding={false}>
       {totalFavorites != 0 && (
         <section className="space-y-2">
           <Title variant="h2" align="center">

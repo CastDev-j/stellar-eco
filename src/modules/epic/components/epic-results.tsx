@@ -16,6 +16,7 @@ import Button from "@/components/ui/button";
 import { IoArrowBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import Skeleton from "@/components/ui/skeleton";
+import { toggleFavoriteInLocalStorage } from "@/actions/favorites-ls/toggle-favorite";
 
 interface Props {
   data: {
@@ -98,7 +99,14 @@ const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
 
       setIsFavorite(newState.isFavorite ? 1 : 0);
     } else {
-      //TODO: manejar logica local
+      const newState = await toggleFavoriteInLocalStorage({
+        userId: "guest",
+        type: "epic",
+        date,
+        newStatus: isFavorite,
+      });
+
+      setIsFavorite(newState.isFavorite ? 1 : 0);
     }
   };
 

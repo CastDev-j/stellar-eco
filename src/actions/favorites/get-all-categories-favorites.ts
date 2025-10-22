@@ -15,7 +15,7 @@ import type {
 import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 
-interface CategorizedFavorites {
+export interface CategorizedFavorites {
   apod: APODFavorite[];
   marsRover: MarsRoverFavorite[];
   epic: EPICFavorite[];

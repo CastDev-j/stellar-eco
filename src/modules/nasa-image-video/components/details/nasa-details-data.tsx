@@ -15,6 +15,7 @@ import { ImageLibraryReference } from "@/interfaces/favorite";
 import { useAuth } from "@clerk/nextjs";
 import { useState } from "react";
 import { toggleFavorite } from "@/actions/favorites/toggle-favorite";
+import { toggleFavoriteInLocalStorage } from "@/actions/favorites-ls/toggle-favorite";
 
 interface Props {
   data: NASAImageAndVideoByID;
@@ -92,7 +93,14 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
 
       setIsFavorite(newState.isFavorite ? 1 : 0);
     } else {
-      //TODO: manejar logica local
+      const newState = await toggleFavoriteInLocalStorage({
+        userId: "guest",
+        type: "image_library",
+        nasaId,
+        newStatus: isFavorite,
+      });
+
+      setIsFavorite(newState.isFavorite ? 1 : 0);
     }
   };
 

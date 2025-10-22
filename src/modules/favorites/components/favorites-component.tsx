@@ -13,8 +13,16 @@ import Link from "next/link";
 import QueryError from "@/components/ui/error";
 import FavoritesNotFound from "./favorites-not-found";
 import FavoritesLoading from "./favorites-loading";
+import { useAuth } from "@clerk/nextjs";
+import { getAllCategoriesFavoritesFromLocalStorage } from "@/actions/favorites-ls/get-all-categories-favorites";
 
 const FavoritesComponent = () => {
+  const { userId } = useAuth();
+
+  const queryFunction = userId
+    ? getAllCategoriesFavorites
+    : getAllCategoriesFavoritesFromLocalStorage;
+
   const {
     data: favorites,
     isLoading,
@@ -22,7 +30,7 @@ const FavoritesComponent = () => {
     refetch,
   } = useQuery({
     queryKey: ["favorites"],
-    queryFn: getAllCategoriesFavorites,
+    queryFn: queryFunction,
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });

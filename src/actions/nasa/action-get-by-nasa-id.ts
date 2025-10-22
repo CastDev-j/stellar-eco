@@ -1,5 +1,5 @@
 import { sleep } from "@/lib/sleep";
-import type { NASAImageAndVideoByID } from "../modules/nasa-image-video/interfaces/nasa-image-and-video-by-id";
+import { NASAImageAndVideoByID } from "@/modules/nasa-image-video/interfaces/nasa-image-and-video-by-id";
 
 const NasaImageAndVideoAPIBaseURL = `https://images-api.nasa.gov/search`;
 

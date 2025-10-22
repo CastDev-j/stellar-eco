@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Container } from "@/components/ui/container";
 import { Paragraph } from "@/components/ui/paragraph";
@@ -17,6 +17,7 @@ import { IoArrowBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import Skeleton from "@/components/ui/skeleton";
 import { toggleFavoriteInLocalStorage } from "@/actions/favorites-ls/toggle-favorite";
+import { getIsFavoriteFromLocalStorage } from "@/actions/favorites-ls/get-is-favorite";
 
 interface Props {
   data: {
@@ -35,6 +36,21 @@ const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
   const [isFavorite, setIsFavorite] = useState<number>(initialState || 0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const { userId } = useAuth();
+
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      if (!userId) {
+        const favoriteStatus = await getIsFavoriteFromLocalStorage({
+          userId: "guest",
+          type: "epic",
+          date,
+        });
+
+        setIsFavorite(favoriteStatus);
+      }
+    };
+    checkFavoriteStatus();
+  }, []);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -56,7 +72,7 @@ const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
     setSelectedIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!emblaApi) return;
     onSelect();
     emblaApi.on("select", onSelect);

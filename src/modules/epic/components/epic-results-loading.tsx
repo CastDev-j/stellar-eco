@@ -8,7 +8,7 @@ const EPICResultsLoading: React.FC = () => {
   return (
     <Container className="space-y-6" padding={false}>
       <div className="flex justify-between max-w-4xl mx-auto items-center">
-        <Skeleton className="w-56 h-10" />
+        <Skeleton className="sm:w-56 w-24 h-10" />
         <Skeleton className="w-46 h-10 rounded-full" />
       </div>
 

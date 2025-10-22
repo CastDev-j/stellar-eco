@@ -49,7 +49,7 @@ const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
       }
     };
     checkFavoriteStatus();
-  }, []);
+  }, [date]);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();

@@ -102,7 +102,12 @@ const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
       <div className="flex justify-between max-w-4xl mx-auto items-center">
         <Paragraph size="lg" align="center">
           <Highlight variant="indigo">{items.length}</Highlight>{" "}
-          {items.length === 1 ? "imagen encontrada" : "imágenes encontradas"}
+          <span className="hidden sm:inline">
+            {items.length === 1 ? "imagen encontrada" : "imágenes encontradas"}
+          </span>
+          <span className="sm:hidden">
+            {items.length === 1 ? "imagen" : "imágenes"}
+          </span>
         </Paragraph>
         <FavoriteButton
           onFavoriteChange={handleFavoriteChange}

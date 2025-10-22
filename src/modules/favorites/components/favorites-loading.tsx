@@ -45,10 +45,6 @@ const FavoritesLoading = () => {
           <Skeleton className="h-5 w-full rounded" />
         </div>
       </section>
-
-      <section className="pt-4 border-t border-stone-200">
-        <Skeleton className="h-4 w-96 mx-auto rounded" />
-      </section>
     </Container>
   );
 };

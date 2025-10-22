@@ -176,13 +176,6 @@ const FavoritesComponent = () => {
       )}
 
       {totalFavorites === 0 && <FavoritesNotFound />}
-
-      <section className="pt-4 border-t border-stone-200">
-        <Paragraph size="sm" align="center" className="text-stone-950/70">
-          Esta funcionalidad solo está disponible para usuarios registrados en
-          la plataforma
-        </Paragraph>
-      </section>
     </Container>
   );
 };

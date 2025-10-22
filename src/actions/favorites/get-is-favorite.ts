@@ -26,8 +26,8 @@ interface GetMarsRoverFavoriteProps extends BaseGetFavoriteProps {
   camera: string;
 }
 
-interface GetEonetFavoriteProps extends BaseGetFavoriteProps {
-  type: "eonet";
+interface GetEpicFavoriteProps extends BaseGetFavoriteProps {
+  type: "epic";
   eventId: string;
 }
 
@@ -35,7 +35,7 @@ type GetIsFavoriteProps =
   | GetNasaImageFavoriteProps
   | GetApodFavoriteProps
   | GetMarsRoverFavoriteProps
-  | GetEonetFavoriteProps;
+  | GetEpicFavoriteProps;
 
 export async function getIsFavorite(
   props: GetIsFavoriteProps
@@ -57,8 +57,8 @@ export async function getIsFavorite(
         camera: props.camera,
       });
 
-    case "eonet":
-      return getEonetFavoriteStatus(userId, props.eventId);
+    case "epic":
+      return getEpicFavoriteStatus(userId, props.eventId);
 
     default:
       return 0;
@@ -133,7 +133,7 @@ const getMarsRoverFavoriteStatus = async (
   return result[0]?.isFavorite ?? 0;
 };
 
-const getEonetFavoriteStatus = async (
+const getEpicFavoriteStatus = async (
   userId: string,
   eventId: string
 ): Promise<number> => {
@@ -145,7 +145,7 @@ const getEonetFavoriteStatus = async (
     .where(
       and(
         eq(favoritesTable.userId, userId),
-        eq(favoritesTable.type, "eonet"),
+        eq(favoritesTable.type, "epic"),
         eq(favoritesTable.referenceData, referenceData)
       )
     )

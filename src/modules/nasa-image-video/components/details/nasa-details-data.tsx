@@ -105,9 +105,6 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
             Volver atrás
           </Button>
           <FavoriteButton
-            type={"image_library"}
-            referenceData={{ nasaId: nasaId } as ImageLibraryReference}
-            userId={userId}
             onFavoriteChange={handleFavoriteChange}
             isFavorite={isFavorite}
           />

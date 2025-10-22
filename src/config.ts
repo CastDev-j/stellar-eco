@@ -8,7 +8,7 @@ export const routes: Route[] = [
   { label: "APOD", path: "/apod" },
   { label: "NASA Image and Video Library", path: "/nasa" },
   { label: "Mars Rover Photos", path: "/mars" },
-  { label: "EONET", path: "/eonet" },
+  { label: "EPIC", path: "/epic" },
   { label: "Favoritos", path: "/favorites" },
 ];
 
@@ -24,6 +24,6 @@ export const SITE_NAME = "Ecos Estelares";
 export const itemsPerPageOptions = {
   nasa: 12,
   mars: 12,
-  eonet: 12,
+  epic: 6,
   apod: 1,
 };

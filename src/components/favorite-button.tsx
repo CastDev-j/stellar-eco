@@ -9,23 +9,13 @@ import Button from "./ui/button";
 import { sleep } from "@/lib/sleep";
 
 interface Props {
-  type: NewFavorite["type"];
-  referenceData: ReferenceData;
-  userId: string | null | undefined;
   isFavorite?: number | null;
   onFavoriteChange?: (isFavorite: number) => void;
   showText?: boolean;
 }
 
 const FavoriteButton = (props: Props) => {
-  const {
-    type,
-    referenceData,
-    userId,
-    isFavorite = null,
-    onFavoriteChange,
-    showText = true,
-  } = props;
+  const { isFavorite = null, onFavoriteChange, showText = true } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -202,10 +192,6 @@ const FavoriteButton = (props: Props) => {
           {isFavorite ? "En favoritos" : "Agregar a favoritos"}
         </span>
       )}
-
-      <div className="hidden">
-        {type} {userId} {!!referenceData}
-      </div>
     </Button>
   );
 };

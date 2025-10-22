@@ -75,23 +75,32 @@ const seedData = [
     },
     isFavorite: 1,
   },
-  // EONET Favorites
+  // EPIC Favorites
   {
     userId,
-    type: "eonet" as const,
-    referenceData: { eventId: "EONET_6536" },
+    type: "epic" as const,
+    referenceData: {
+      image: "epic_1b_20241021120000",
+      date: "2024-10-21",
+    },
     isFavorite: 1,
   },
   {
     userId,
-    type: "eonet" as const,
-    referenceData: { eventId: "EONET_6421" },
+    type: "epic" as const,
+    referenceData: {
+      image: "epic_1b_20241020093000",
+      date: "2024-10-20",
+    },
     isFavorite: 1,
   },
   {
     userId,
-    type: "eonet" as const,
-    referenceData: { eventId: "EONET_6789" },
+    type: "epic" as const,
+    referenceData: {
+      image: "epic_1b_20241019150000",
+      date: "2024-10-19",
+    },
     isFavorite: 1,
   },
   // Image Library Favorites
@@ -131,9 +140,7 @@ async function main() {
   console.log(
     `   - Mars Rover: ${seedData.filter((d) => d.type === "mars_rover").length}`
   );
-  console.log(
-    `   - EONET: ${seedData.filter((d) => d.type === "eonet").length}`
-  );
+  console.log(`   - EPIC: ${seedData.filter((d) => d.type === "epic").length}`);
   console.log(
     `   - Image Library: ${
       seedData.filter((d) => d.type === "image_library").length

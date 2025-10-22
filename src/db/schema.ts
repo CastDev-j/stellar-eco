@@ -14,7 +14,7 @@ export const favoritesTable = sqliteTable(
       .$defaultFn(() => crypto.randomUUID()),
     userId: text("user_id").notNull(),
     type: text("type", {
-      enum: ["apod", "mars_rover", "image_library", "eonet"],
+      enum: ["apod", "mars_rover", "image_library", "epic"],
     }).notNull(),
     referenceData: text("reference_data", { mode: "json" }).notNull(),
     createdAt: integer("created_at", { mode: "timestamp" })

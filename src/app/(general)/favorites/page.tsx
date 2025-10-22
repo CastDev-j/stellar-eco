@@ -4,7 +4,7 @@ import { Title } from "@/components/ui/title";
 import { Highlight } from "@/components/ui/highlight";
 import APODTEST from "@/modules/apod/components/test";
 
-const EonetPage = async () => {
+const FavoritesPage = async () => {
   return (
     <Container className="space-y-8">
       <section className="space-y-4">
@@ -24,4 +24,4 @@ const EonetPage = async () => {
   );
 };
 
-export default EonetPage;
+export default FavoritesPage;

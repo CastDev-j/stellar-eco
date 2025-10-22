@@ -27,8 +27,8 @@ interface ToggleMarsRoverProps extends BaseToggleProps {
   camera: string;
 }
 
-interface ToggleEonetProps extends BaseToggleProps {
-  type: "eonet";
+interface ToggleEpicProps extends BaseToggleProps {
+  type: "epic";
   eventId: string;
 }
 
@@ -36,7 +36,7 @@ type ToggleFavoriteProps =
   | ToggleNasaImageProps
   | ToggleApodProps
   | ToggleMarsRoverProps
-  | ToggleEonetProps;
+  | ToggleEpicProps;
 
 export async function toggleFavorite(
   props: ToggleFavoriteProps
@@ -62,8 +62,8 @@ export async function toggleFavorite(
         newStatus
       );
 
-    case "eonet":
-      return upsertEonetFavorite(userId, props.eventId, newStatus);
+    case "epic":
+      return upsertEpicFavorite(userId, props.eventId, newStatus);
 
     default:
       throw new Error("Tipo de referencia no válido");
@@ -159,7 +159,7 @@ const upsertMarsRoverFavorite = async (
   return result;
 };
 
-const upsertEonetFavorite = async (
+const upsertEpicFavorite = async (
   userId: string,
   eventId: string,
   newStatus: number
@@ -170,7 +170,7 @@ const upsertEonetFavorite = async (
     .insert(favoritesTable)
     .values({
       userId,
-      type: "eonet",
+      type: "epic",
       referenceData,
       isFavorite: newStatus,
     })

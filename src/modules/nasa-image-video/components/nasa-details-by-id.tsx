@@ -1,10 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import actionGetByNasaId from "@/actions/action-get-by-nasa-id";
 import NasaDetailsData from "./details/nasa-details-data";
 import NasaDetailsLoading from "./details/nasa-details-loading";
 import NasaDetailsError from "./details/nasa-details-error";
+import actionGetByNasaId from "@/actions/nasa/action-get-by-nasa-id";
 
 interface Props {
   nasaId: string;

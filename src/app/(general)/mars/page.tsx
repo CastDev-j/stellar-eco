@@ -3,11 +3,12 @@ import { Paragraph } from "@/components/ui/paragraph";
 import { Title } from "@/components/ui/title";
 import { Highlight } from "@/components/ui/highlight";
 import NASAResultsLoading from "@/modules/nasa-image-video/components/nasa-results-loading";
+import ApiUnavailable from "@/components/api-unavaliable";
 
 const MarsRoverPage = () => {
   return (
     <Container className="space-y-8">
-      <section className="space-y-4">
+      {/* <section className="space-y-4">
         <Title variant="h1" align="center">
           Mars Rover Photos
         </Title>
@@ -17,7 +18,8 @@ const MarsRoverPage = () => {
           capturadas por los rovers de la NASA: Curiosity, Opportunity, Spirit y
           Perseverance.
         </Paragraph>
-      </section>
+      </section> */}
+      <ApiUnavailable errorMessage="Repositorio archivado: los endpoints de la API han sido eliminados. No hay datos disponibles actualmente." />
     </Container>
   );
 };

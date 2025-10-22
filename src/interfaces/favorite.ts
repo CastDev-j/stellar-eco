@@ -15,8 +15,8 @@ export interface MarsRoverReference {
   photoId: string;
 }
 
-export interface EONETReference {
-  eventId: string;
+export interface EPICReference {
+  eventDate: Date;
 }
 
 export interface ImageLibraryReference {
@@ -26,7 +26,7 @@ export interface ImageLibraryReference {
 export type ReferenceData =
   | APODReference
   | MarsRoverReference
-  | EONETReference
+  | EPICReference
   | ImageLibraryReference;
 
 export type APODFavorite = Favorite & {
@@ -39,9 +39,9 @@ export type MarsRoverFavorite = Favorite & {
   referenceData: MarsRoverReference;
 };
 
-export type EONETFavorite = Favorite & {
-  type: "eonet";
-  referenceData: EONETReference;
+export type EPICFavorite = Favorite & {
+  type: "epic";
+  referenceData: EPICReference;
 };
 
 export type ImageLibraryFavorite = Favorite & {
@@ -52,5 +52,5 @@ export type ImageLibraryFavorite = Favorite & {
 export type TypedFavorite =
   | APODFavorite
   | MarsRoverFavorite
-  | EONETFavorite
+  | EPICFavorite
   | ImageLibraryFavorite;

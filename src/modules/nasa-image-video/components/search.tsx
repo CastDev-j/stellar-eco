@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { searchQuery } from "@/actions/search-query";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { IoMdSearch } from "react-icons/io";
@@ -11,6 +10,7 @@ import NASAResults from "./nasa-results";
 import NASADefaultComponent from "./nasa-results-default";
 import { useRouter, useSearchParams } from "next/navigation";
 import QueryError from "@/components/ui/error";
+import { searchQuery } from "@/actions/nasa/search-query";
 
 const SearchImageAndVideo = () => {
   const router = useRouter();

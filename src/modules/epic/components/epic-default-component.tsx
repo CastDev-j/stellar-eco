@@ -1,19 +1,19 @@
 import { useRef } from "react";
 import { Title } from "@/components/ui/title";
 import { Paragraph } from "@/components/ui/paragraph";
-import { ImEarth } from "react-icons/im";
+import { IoMdImages } from "react-icons/io";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-const NASADefaultComponent = () => {
-  const earthRef = useRef<HTMLDivElement>(null);
+const EPICDefaultComponent = () => {
+  const iconRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     const tl = gsap.timeline();
 
     tl.fromTo(
-      earthRef.current,
+      iconRef.current,
       {
         scale: 0,
         rotation: -180,
@@ -43,47 +43,46 @@ const NASADefaultComponent = () => {
       "-=0.3"
     );
 
-    gsap.to(earthRef.current, {
-      rotation: 360,
-      duration: 20,
+    gsap.to(iconRef.current, {
+      y: -10,
+      duration: 2,
       repeat: -1,
-      ease: "none",
+      yoyo: true,
+      ease: "power1.inOut",
     });
   }, []);
 
   return (
     <div className="flex flex-col justify-center items-center min-h-128 text-center gap-6">
-      <div ref={earthRef} className="flex justify-center">
+      <div ref={iconRef} className="flex justify-center">
         <div className="w-24 h-24 rounded-full flex items-center justify-center">
-          <ImEarth className="size-16 text-indigo-600" />
+          <IoMdImages className="size-16 text-indigo-600" />
         </div>
       </div>
 
-      {/* Título y descripción */}
       <div ref={titleRef} className="space-y-3">
         <Title variant="h2" align="center">
-          Explora el Universo
+          Explora las Imágenes EPIC
         </Title>
         <Paragraph
           size="lg"
           align="center"
           className="max-w-3xl text-stone-600"
         >
-          Ingresa un término de búsqueda para explorar la biblioteca multimedia
-          de la NASA .
+          Usa los filtros arriba para buscar imágenes de la Tierra tomadas por
+          el satélite DSCOVR.
         </Paragraph>
       </div>
 
       <div className="mt-2">
-        <Paragraph size="sm" className="text-stone-500 dark:text-stone-400">
-          Sugerencias: <span className="font-medium">Apollo 11</span>,{" "}
-          <span className="font-medium">Hubble</span>,{" "}
-          <span className="font-medium">Mars</span>,{" "}
-          <span className="font-medium">Moon</span>,{" "}
+        <Paragraph size="sm" className="text-stone-500">
+          Sugerencias: <span className="font-medium">2024-01-15</span>,{" "}
+          <span className="font-medium">Año: 2023</span>,{" "}
+          <span className="font-medium">Mes: 12</span>
         </Paragraph>
       </div>
     </div>
   );
 };
 
-export default NASADefaultComponent;
+export default EPICDefaultComponent;

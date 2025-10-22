@@ -7,9 +7,15 @@ import Skeleton from "@/components/ui/skeleton";
 const EPICResultsLoading: React.FC = () => {
   return (
     <Container className="space-y-6" padding={false}>
-      <div className="flex justify-between max-w-4xl mx-auto items-center">
+      <div className="border-b border-stone-200">
+        <div className="container flex justify-between py-4">
+          <Skeleton className="w-30 h-10" />
+          <Skeleton className="w-46 h-10 rounded-full" />
+        </div>
+      </div>
+
+      <div className="flex">
         <Skeleton className="sm:w-56 w-24 h-10" />
-        <Skeleton className="w-46 h-10 rounded-full" />
       </div>
 
       <div className="space-y-4">

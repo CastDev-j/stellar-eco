@@ -12,6 +12,10 @@ import { EPICImage } from "../interfaces/epic-image";
 import FavoriteButton from "@/components/favorite-button";
 import { useAuth } from "@clerk/nextjs";
 import { toggleFavorite } from "@/actions/favorites/toggle-favorite";
+import Button from "@/components/ui/button";
+import { IoArrowBack } from "react-icons/io5";
+import { useRouter } from "next/navigation";
+import Skeleton from "@/components/ui/skeleton";
 
 interface Props {
   data: {
@@ -24,6 +28,7 @@ interface Props {
 }
 
 const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
+  const router = useRouter();
   const items = data?.collection?.items || [];
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState<number>(initialState || 0);
@@ -97,9 +102,29 @@ const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
     }
   };
 
+  const handleGoBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      window.history.back();
+    } else {
+      router.replace("/epic");
+    }
+  };
+
   return (
     <Container className="space-y-6" padding={false}>
-      <div className="flex justify-between max-w-4xl mx-auto items-center">
+      <div className="border-b border-stone-200">
+        <div className="container flex justify-between py-4">
+          <Button onClick={handleGoBack} variant="ghost" className="gap-2">
+            <IoArrowBack className="size-4" />
+            Volver atrás
+          </Button>
+          <FavoriteButton
+            onFavoriteChange={handleFavoriteChange}
+            isFavorite={isFavorite}
+          />
+        </div>
+      </div>
+      <div className="flex justify-between">
         <Paragraph size="lg" align="center">
           <Highlight variant="indigo">{items.length}</Highlight>{" "}
           <span className="hidden sm:inline">
@@ -109,10 +134,6 @@ const EPICResults: React.FC<Props> = ({ data, date, initialState }) => {
             {items.length === 1 ? "imagen" : "imágenes"}
           </span>
         </Paragraph>
-        <FavoriteButton
-          onFavoriteChange={handleFavoriteChange}
-          isFavorite={isFavorite}
-        />
       </div>
 
       <div className="space-y-4">

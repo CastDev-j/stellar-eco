@@ -12,6 +12,7 @@ import { fetchEPICImages } from "@/actions/epic/get-epic-images";
 import EPICResultsLoading from "./epic-results-loading";
 import EPICDefaultComponent from "./epic-default-component";
 import EPICResults from "./epic-results";
+import { IoArrowBack } from "react-icons/io5";
 
 interface Props {
   initialState?: number;
@@ -65,7 +66,7 @@ const EPICImageFilter = ({ initialState }: Props) => {
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
             min="2015-06-13"
-            max={new Date().toISOString().split("T")[0]}
+            max="2025-07-15"
             className="flex-1 w-fit"
             placeholder="Selecciona una fecha"
           />

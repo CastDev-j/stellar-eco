@@ -12,7 +12,6 @@ import { fetchEPICImages } from "@/actions/epic/get-epic-images";
 import EPICResultsLoading from "./epic-results-loading";
 import EPICDefaultComponent from "./epic-default-component";
 import EPICResults from "./epic-results";
-import { IoArrowBack } from "react-icons/io5";
 
 interface Props {
   initialState?: number;
@@ -34,15 +33,17 @@ const EPICImageFilter = ({ initialState }: Props) => {
     queryKey: ["EPIC", dateParam],
     queryFn: () => fetchEPICImages(dateParam),
     enabled: dateParam.trim() !== "",
-    placeholderData: (prev) => prev,
+    placeholderData: dateParam.trim() !== "" ? (prev) => prev : undefined,
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedDate) return;
-    router.push(`?date=${selectedDate}`);
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDate = e.target.value;
+    setSelectedDate(newDate);
+    if (newDate) {
+      router.push(`?date=${newDate}`);
+    }
   };
 
   const handleClearFilters = () => {
@@ -59,43 +60,37 @@ const EPICImageFilter = ({ initialState }: Props) => {
   return (
     <Container className="space-y-8" padding={false}>
       <section className="max-w-4xl mx-auto">
-        <form onSubmit={handleSubmit} className="flex gap-4">
+        <div className="flex gap-4">
           <Input
             id="date"
             type="date"
             value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
+            onChange={handleDateChange}
             min="2015-06-13"
             max="2025-07-15"
             className="flex-1 w-fit"
             placeholder="Selecciona una fecha"
           />
 
-          <div className="flex items-center gap-2">
-            <Button type="submit" disabled={!selectedDate} className="px-6">
-              Buscar
+          {hasActiveFilter && (
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={handleClearFilters}
+              className="px-4"
+            >
+              <IoMdClose />
             </Button>
-
-            {hasActiveFilter && (
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={handleClearFilters}
-                className="px-4"
-              >
-                <IoMdClose />
-              </Button>
-            )}
-          </div>
-        </form>
+          )}
+        </div>
       </section>
 
       <section className="space-y-6">
-        {!isLoading && !data && !error && <EPICDefaultComponent />}
+        {!isLoading && !hasActiveFilter && <EPICDefaultComponent />}
 
         {isLoading && <EPICResultsLoading />}
 
-        {data && (
+        {data && hasActiveFilter && (
           <EPICResults
             data={data}
             date={selectedDate}

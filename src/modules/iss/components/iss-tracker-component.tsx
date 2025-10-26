@@ -7,7 +7,7 @@ import { Paragraph } from "@/components/ui/paragraph";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Highlight } from "@/components/ui/highlight";
 import { Button } from "@/components/ui/button";
-import actionGetISSPosition from "@/actions/iss/get-iss-position";
+import getISSPosition from "@/actions/iss/get-iss-position";
 import IssTrackerLoading from "./iss-tracker-loading";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -36,7 +36,7 @@ const ISSTrackerComponent = () => {
     refetch,
   } = useQuery({
     queryKey: ["iss-position"],
-    queryFn: actionGetISSPosition,
+    queryFn: getISSPosition,
     refetchInterval: 5000,
     staleTime: 4000,
   });

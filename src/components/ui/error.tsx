@@ -83,7 +83,7 @@ const QueryError: React.FC<Props> = ({ error, title, onRetry }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-[32.0rem] text-center gap-4">
+    <div className="flex flex-col justify-center items-center min-h-128 text-center gap-4">
       <div className="flex justify-center">
         <div className="w-18 h-18 rounded-full flex items-center justify-center">
           <MdErrorOutline className="size-24 text-red-600" />

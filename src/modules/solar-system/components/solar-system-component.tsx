@@ -1,96 +1,149 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Container } from "@/components/ui/container";
 import { Paragraph } from "@/components/ui/paragraph";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Highlight } from "@/components/ui/highlight";
-import { Button } from "@/components/ui/button";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import getSolarSystemBodies, {
+  type SolarSystemBody,
+} from "@/actions/solar-system/get-solar-system-bodies";
+import SolarSystemLoading from "./solar-system-loader";
+import QueryError from "@/components/ui/error";
+import FavoriteButton from "@/components/favorite-button";
+import { useAuth } from "@clerk/nextjs";
+import { toggleFavorite } from "@/actions/favorites/toggle-favorite";
+import { toggleFavoriteInLocalStorage } from "@/actions/favorites-ls/toggle-favorite";
+import { SolarSystemFavorite } from "@/interfaces/favorite";
+import { getSolarSystemFavoritesFromLocalStorage } from "@/actions/solar-system/get-solar-system-favorites-local-storage";
 
-interface SolarSystemBody {
-  id: string;
-  name: string;
-  englishName: string;
-  isPlanet: boolean;
-  mass?: {
-    massValue: number;
-    massExponent: number;
-  };
-  vol?: {
-    volValue: number;
-    volExponent: number;
-  };
-  density?: number;
-  gravity?: number;
-  meanRadius?: number;
+interface Props {
+  initialFavorites?: SolarSystemFavorite[] | null;
 }
 
-const SolarSystemComponent = () => {
-  const [bodies, setBodies] = useState<SolarSystemBody[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const SolarSystemComponent = ({ initialFavorites }: Props) => {
+  const { userId } = useAuth();
   const [selectedBody, setSelectedBody] = useState<SolarSystemBody | null>(
     null
   );
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [favorites, setFavorites] = useState<Map<string, number>>(new Map());
+  const [, setLoadingFavorites] = useState(true);
+
+  const {
+    data: bodies,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["solar-system-bodies"],
+    queryFn: () => getSolarSystemBodies(),
+    staleTime: 300_000,
+  });
 
   useEffect(() => {
-    const fetchBodies = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          "https://api.le-systeme-solaire.net/rest/bodies?filter[]=isPlanet,eq,true"
-        );
+    const loadFavorites = async () => {
+      if (!bodies) return;
 
-        if (!response.ok) {
-          throw new Error("Error al obtener datos del sistema solar");
-        }
+      setLoadingFavorites(true);
+      const favMap = new Map<string, number>();
 
-        const data = await response.json();
-        setBodies(data.bodies);
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Error desconocido");
-      } finally {
-        setLoading(false);
+      if (userId && initialFavorites) {
+        initialFavorites.forEach((fav) => {
+          try {
+            const data =
+              typeof fav.referenceData === "string"
+                ? JSON.parse(fav.referenceData)
+                : fav.referenceData;
+
+            if (data.bodyId) {
+              favMap.set(data.bodyId, fav.isFavorite || 0);
+            }
+          } catch (error) {
+            console.error("Error parsing favorite data:", error);
+          }
+        });
+      } else {
+        const localFavorites = await getSolarSystemFavoritesFromLocalStorage();
+
+        localFavorites.forEach((fav) => {
+          try {
+            const data =
+              typeof fav.referenceData === "string"
+                ? JSON.parse(fav.referenceData)
+                : fav.referenceData;
+
+            if (data.bodyId) {
+              favMap.set(data.bodyId, fav.isFavorite ?? 0);
+            }
+          } catch (error) {
+            console.error("Error parsing favorite data:", error);
+          }
+        });
       }
+
+      bodies.forEach((body) => {
+        if (!favMap.has(body.id)) {
+          favMap.set(body.id, 0);
+        }
+      });
+
+      setFavorites(favMap);
+      setLoadingFavorites(false);
     };
 
-    fetchBodies();
-  }, []);
+    loadFavorites();
+  }, [bodies, userId, initialFavorites]);
 
-  const toggleFavorite = (bodyId: string) => {
-    setFavorites((prev) => {
-      const newFavorites = new Set(prev);
-      if (newFavorites.has(bodyId)) {
-        newFavorites.delete(bodyId);
+  const handleFavoriteChange = async (
+    bodyId: string,
+    currentStatus: number
+  ) => {
+    const body = bodies?.find((b) => b.id === bodyId);
+    if (!body) return;
+
+    try {
+      let newState;
+      if (userId) {
+        newState = await toggleFavorite({
+          type: "solar_system",
+          userId,
+          newStatus: currentStatus,
+          bodyId: body.id,
+          bodyName: body.englishName,
+        });
       } else {
-        newFavorites.add(bodyId);
+        newState = await toggleFavoriteInLocalStorage({
+          userId: "guest",
+          type: "solar_system",
+          newStatus: currentStatus,
+          bodyId: body.id,
+          bodyName: body.englishName,
+        });
       }
-      return newFavorites;
-    });
+
+      setFavorites((prev) => {
+        const newMap = new Map(prev);
+        newMap.set(bodyId, newState.isFavorite || 0);
+        return newMap;
+      });
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
   };
 
-  if (loading) {
-    return (
-      <Container className="space-y-8">
-        <Paragraph align="center">
-          Cargando datos del sistema solar...
-        </Paragraph>
-      </Container>
-    );
-  }
+  if (isLoading) return <SolarSystemLoading />;
 
   if (error) {
     return (
-      <Container className="space-y-8">
-        <Paragraph align="center" className="text-red-500">
-          {error}
-        </Paragraph>
-      </Container>
+      <QueryError
+        error={error}
+        title="Error accediendo a la API de Solar System"
+      />
     );
   }
+
+  if (!bodies) return null;
 
   return (
     <Container className="space-y-8">
@@ -108,39 +161,34 @@ const SolarSystemComponent = () => {
                 <Paragraph size="lg" className="font-semibold">
                   {body.englishName}
                 </Paragraph>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleFavorite(body.id);
-                  }}
-                >
-                  {favorites.has(body.id) ? (
-                    <FaHeart className="text-red-500" />
-                  ) : (
-                    <FaRegHeart />
-                  )}
-                </Button>
+                <FavoriteButton
+                  isFavorite={favorites.get(body.id) ?? 0}
+                  onFavoriteChange={(newStatus) =>
+                    handleFavoriteChange(body.id, newStatus)
+                  }
+                  showText={false}
+                />
               </div>
 
-              {body.meanRadius && (
-                <Paragraph size="sm" className="text-stone-600">
-                  Radio:{" "}
-                  <Highlight variant="indigo">
-                    {body.meanRadius.toLocaleString()} km
-                  </Highlight>
-                </Paragraph>
-              )}
+              <div className="space-y-2">
+                {body.meanRadius && (
+                  <Paragraph size="sm" className="text-stone-600">
+                    Radio:{" "}
+                    <Highlight variant="indigo">
+                      {body.meanRadius.toLocaleString()} km
+                    </Highlight>
+                  </Paragraph>
+                )}
 
-              {body.gravity && (
-                <Paragraph size="sm" className="text-stone-600">
-                  Gravedad:{" "}
-                  <Highlight variant="green">
-                    {body.gravity.toFixed(2)} m/s²
-                  </Highlight>
-                </Paragraph>
-              )}
+                {body.gravity && (
+                  <Paragraph size="sm" className="text-stone-600">
+                    Gravedad:{" "}
+                    <Highlight variant="green">
+                      {body.gravity.toFixed(2)} m/s²
+                    </Highlight>
+                  </Paragraph>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -148,7 +196,16 @@ const SolarSystemComponent = () => {
 
       {selectedBody && (
         <section className="space-y-4 p-6 bg-stone-50 rounded-lg">
-          <Subtitle variant="h4">{selectedBody.englishName}</Subtitle>
+          <div className="flex items-center justify-between mb-4">
+            <Subtitle variant="h4">{selectedBody.englishName}</Subtitle>
+            <FavoriteButton
+              isFavorite={favorites.get(selectedBody.id) ?? 0}
+              onFavoriteChange={(newStatus) =>
+                handleFavoriteChange(selectedBody.id, newStatus)
+              }
+              showText={true}
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {selectedBody.meanRadius && (

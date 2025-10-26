@@ -112,7 +112,12 @@ const FavoritesComponent = () => {
 
               return (
                 <ListItem key={item.id}>
-                  <span className="text-red-500">[Sin enlace disponible]</span>{" "}
+                  <Link
+                    href={"/solar-system"}
+                    className="text-indigo-600 hover:text-indigo-800 hover:underline font-medium"
+                  >
+                    Ver Planetas
+                  </Link>{" "}
                   - Cuerpo celeste:{" "}
                   <Highlight variant="yellow">{refData.bodyName}</Highlight>{" "}
                   (ID: {refData.bodyId})

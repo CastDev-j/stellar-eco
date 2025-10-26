@@ -24,7 +24,7 @@ export interface ISSPosition {
 
 const ISSTrackerAPIBaseURL = `https://api.wheretheiss.at/v1/satellites`;
 
-export async function actionGetISSPosition({
+export async function getISSPosition({
   queryKey,
 }: {
   queryKey: [string];
@@ -48,4 +48,4 @@ export async function actionGetISSPosition({
   };
 }
 
-export default actionGetISSPosition;
+export default getISSPosition;

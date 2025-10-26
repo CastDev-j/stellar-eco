@@ -3,12 +3,12 @@
 import { db } from "@/lib/turso";
 import { favoritesTable } from "@/db/schema";
 import type {
-  APODFavorite,
-  MarsRoverFavorite,
+  ISSFavorite,
+  SolarSystemFavorite,
   EPICFavorite,
   ImageLibraryFavorite,
-  APODReference,
-  MarsRoverReference,
+  ISSReference,
+  SolarSystemReference,
   EPICReference,
   ImageLibraryReference,
 } from "@/interfaces/favorite";
@@ -16,8 +16,8 @@ import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 
 export interface CategorizedFavorites {
-  apod: APODFavorite[];
-  marsRover: MarsRoverFavorite[];
+  iss: ISSFavorite[];
+  solarSystem: SolarSystemFavorite[];
   epic: EPICFavorite[];
   imageLibrary: ImageLibraryFavorite[];
 }
@@ -27,8 +27,8 @@ export async function getAllCategoriesFavorites(): Promise<CategorizedFavorites>
 
   if (!userId) {
     return {
-      apod: [],
-      marsRover: [],
+      iss: [],
+      solarSystem: [],
       epic: [],
       imageLibrary: [],
     };
@@ -42,8 +42,8 @@ export async function getAllCategoriesFavorites(): Promise<CategorizedFavorites>
     );
 
   const categorized: CategorizedFavorites = {
-    apod: [],
-    marsRover: [],
+    iss: [],
+    solarSystem: [],
     epic: [],
     imageLibrary: [],
   };
@@ -55,17 +55,17 @@ export async function getAllCategoriesFavorites(): Promise<CategorizedFavorites>
         : row.referenceData;
 
     switch (row.type) {
-      case "apod":
-        categorized.apod.push({
+      case "iss":
+        categorized.iss.push({
           ...row,
-          referenceData: parsedReferenceData as APODReference,
-        } as APODFavorite);
+          referenceData: parsedReferenceData as ISSReference,
+        } as ISSFavorite);
         break;
-      case "mars_rover":
-        categorized.marsRover.push({
+      case "solar_system":
+        categorized.solarSystem.push({
           ...row,
-          referenceData: parsedReferenceData as MarsRoverReference,
-        } as MarsRoverFavorite);
+          referenceData: parsedReferenceData as SolarSystemReference,
+        } as SolarSystemFavorite);
         break;
       case "epic":
         categorized.epic.push({

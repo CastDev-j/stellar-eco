@@ -47,8 +47,8 @@ const FavoritesComponent = () => {
   if (!favorites) return <FavoritesNotFound />;
 
   const totalFavorites =
-    favorites.apod.length +
-    favorites.marsRover.length +
+    favorites.iss.length +
+    favorites.solarSystem.length +
     favorites.epic.length +
     favorites.imageLibrary.length;
 
@@ -67,23 +67,30 @@ const FavoritesComponent = () => {
         </section>
       )}
 
-      {favorites.apod.length > 0 && (
+      {favorites.iss.length > 0 && (
         <section className="space-y-3">
-          <Subtitle variant="h4">
-            Astronomy Picture of the Day ({favorites.apod.length})
-          </Subtitle>
+          <Subtitle variant="h4">ISS Tracker ({favorites.iss.length})</Subtitle>
           <List variant="indigo">
-            {favorites.apod.map((item) => {
+            {favorites.iss.map((item) => {
               const refData =
                 typeof item.referenceData === "string"
                   ? JSON.parse(item.referenceData)
                   : item.referenceData;
 
+              const date = new Date(refData.timestamp * 1000);
+              const formattedDate = date.toLocaleString("es-MX", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              });
+
               return (
                 <ListItem key={item.id}>
                   <span className="text-red-500">[Sin enlace disponible]</span>{" "}
                   - Fecha:{" "}
-                  <Highlight variant="yellow">{refData.date}</Highlight>
+                  <Highlight variant="yellow">{formattedDate}</Highlight>, Lat:{" "}
+                  {refData.latitude.toFixed(2)}°, Lon:{" "}
+                  {refData.longitude.toFixed(2)}°, Alt:{" "}
+                  {refData.altitude.toFixed(0)} km
                 </ListItem>
               );
             })}
@@ -91,13 +98,13 @@ const FavoritesComponent = () => {
         </section>
       )}
 
-      {favorites.marsRover.length > 0 && (
+      {favorites.solarSystem.length > 0 && (
         <section className="space-y-3">
           <Subtitle variant="h4">
-            Mars Rover Photos ({favorites.marsRover.length})
+            Solar System Bodies ({favorites.solarSystem.length})
           </Subtitle>
           <List variant="indigo">
-            {favorites.marsRover.map((item) => {
+            {favorites.solarSystem.map((item) => {
               const refData =
                 typeof item.referenceData === "string"
                   ? JSON.parse(item.referenceData)
@@ -106,9 +113,9 @@ const FavoritesComponent = () => {
               return (
                 <ListItem key={item.id}>
                   <span className="text-red-500">[Sin enlace disponible]</span>{" "}
-                  - Rover:{" "}
-                  <Highlight variant="yellow">{refData.rover}</Highlight>, Sol:{" "}
-                  {refData.sol}, Cámara: {refData.camera}
+                  - Cuerpo celeste:{" "}
+                  <Highlight variant="yellow">{refData.bodyName}</Highlight>{" "}
+                  (ID: {refData.bodyId})
                 </ListItem>
               );
             })}

@@ -13,17 +13,18 @@ interface GetNasaImageFavoriteProps extends BaseGetFavoriteProps {
   nasaId: string;
 }
 
-interface GetApodFavoriteProps extends BaseGetFavoriteProps {
-  type: "apod";
-  date: string;
+interface GetISSFavoriteProps extends BaseGetFavoriteProps {
+  type: "iss";
+  timestamp: number;
+  latitude: number;
+  longitude: number;
+  altitude: number;
 }
 
-interface GetMarsRoverFavoriteProps extends BaseGetFavoriteProps {
-  type: "mars_rover";
-  photoId: string;
-  rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-  sol: number;
-  camera: string;
+interface GetSolarSystemFavoriteProps extends BaseGetFavoriteProps {
+  type: "solar_system";
+  bodyId: string;
+  bodyName: string;
 }
 
 interface GetEpicFavoriteProps extends BaseGetFavoriteProps {
@@ -33,8 +34,8 @@ interface GetEpicFavoriteProps extends BaseGetFavoriteProps {
 
 type GetIsFavoriteProps =
   | GetNasaImageFavoriteProps
-  | GetApodFavoriteProps
-  | GetMarsRoverFavoriteProps
+  | GetISSFavoriteProps
+  | GetSolarSystemFavoriteProps
   | GetEpicFavoriteProps;
 
 export async function getIsFavorite(
@@ -46,15 +47,18 @@ export async function getIsFavorite(
     case "image_library":
       return getNasaImageFavoriteStatus(userId, props.nasaId);
 
-    case "apod":
-      return getApodFavoriteStatus(userId, props.date);
+    case "iss":
+      return getISSFavoriteStatus(userId, {
+        timestamp: props.timestamp,
+        latitude: props.latitude,
+        longitude: props.longitude,
+        altitude: props.altitude,
+      });
 
-    case "mars_rover":
-      return getMarsRoverFavoriteStatus(userId, {
-        photoId: props.photoId,
-        rover: props.rover,
-        sol: props.sol,
-        camera: props.camera,
+    case "solar_system":
+      return getSolarSystemFavoriteStatus(userId, {
+        bodyId: props.bodyId,
+        bodyName: props.bodyName,
       });
 
     case "epic":
@@ -86,11 +90,16 @@ const getNasaImageFavoriteStatus = async (
   return result[0]?.isFavorite ?? 0;
 };
 
-const getApodFavoriteStatus = async (
+const getISSFavoriteStatus = async (
   userId: string,
-  date: string
+  issData: {
+    timestamp: number;
+    latitude: number;
+    longitude: number;
+    altitude: number;
+  }
 ): Promise<number> => {
-  const referenceData = JSON.stringify({ date });
+  const referenceData = JSON.stringify(issData);
 
   const result = await db
     .select({ isFavorite: favoritesTable.isFavorite })
@@ -98,7 +107,7 @@ const getApodFavoriteStatus = async (
     .where(
       and(
         eq(favoritesTable.userId, userId),
-        eq(favoritesTable.type, "apod"),
+        eq(favoritesTable.type, "iss"),
         eq(favoritesTable.referenceData, referenceData)
       )
     )
@@ -107,16 +116,14 @@ const getApodFavoriteStatus = async (
   return result[0]?.isFavorite ?? 0;
 };
 
-const getMarsRoverFavoriteStatus = async (
+const getSolarSystemFavoriteStatus = async (
   userId: string,
-  roverData: {
-    photoId: string;
-    rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-    sol: number;
-    camera: string;
+  solarSystemData: {
+    bodyId: string;
+    bodyName: string;
   }
 ): Promise<number> => {
-  const referenceData = JSON.stringify(roverData);
+  const referenceData = JSON.stringify(solarSystemData);
 
   const result = await db
     .select({ isFavorite: favoritesTable.isFavorite })
@@ -124,7 +131,7 @@ const getMarsRoverFavoriteStatus = async (
     .where(
       and(
         eq(favoritesTable.userId, userId),
-        eq(favoritesTable.type, "mars_rover"),
+        eq(favoritesTable.type, "solar_system"),
         eq(favoritesTable.referenceData, referenceData)
       )
     )

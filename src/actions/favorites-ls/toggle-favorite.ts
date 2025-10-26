@@ -10,17 +10,18 @@ interface ToggleNasaImageProps extends BaseToggleProps {
   nasaId: string;
 }
 
-interface ToggleApodProps extends BaseToggleProps {
-  type: "apod";
-  date: string;
+interface ToggleISSProps extends BaseToggleProps {
+  type: "iss";
+  timestamp: number;
+  latitude: number;
+  longitude: number;
+  altitude: number;
 }
 
-interface ToggleMarsRoverProps extends BaseToggleProps {
-  type: "mars_rover";
-  photoId: string;
-  rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-  sol: number;
-  camera: string;
+interface ToggleSolarSystemProps extends BaseToggleProps {
+  type: "solar_system";
+  bodyId: string;
+  bodyName: string;
 }
 
 interface ToggleEpicProps extends BaseToggleProps {
@@ -30,8 +31,8 @@ interface ToggleEpicProps extends BaseToggleProps {
 
 type ToggleFavoriteProps =
   | ToggleNasaImageProps
-  | ToggleApodProps
-  | ToggleMarsRoverProps
+  | ToggleISSProps
+  | ToggleSolarSystemProps
   | ToggleEpicProps;
 
 export function toggleFavoriteInLocalStorage(
@@ -47,17 +48,24 @@ export function toggleFavoriteInLocalStorage(
         newStatus
       );
 
-    case "apod":
-      return upsertApodFavoriteInLocalStorage(userId, props.date, newStatus);
-
-    case "mars_rover":
-      return upsertMarsRoverFavoriteInLocalStorage(
+    case "iss":
+      return upsertISSFavoriteInLocalStorage(
         userId,
         {
-          photoId: props.photoId,
-          rover: props.rover,
-          sol: props.sol,
-          camera: props.camera,
+          timestamp: props.timestamp,
+          latitude: props.latitude,
+          longitude: props.longitude,
+          altitude: props.altitude,
+        },
+        newStatus
+      );
+
+    case "solar_system":
+      return upsertSolarSystemFavoriteInLocalStorage(
+        userId,
+        {
+          bodyId: props.bodyId,
+          bodyName: props.bodyName,
         },
         newStatus
       );
@@ -119,14 +127,19 @@ const upsertNasaImageVideoFavoriteInLocalStorage = (
   });
 };
 
-const upsertApodFavoriteInLocalStorage = (
+const upsertISSFavoriteInLocalStorage = (
   userId: string,
-  date: string,
+  issData: {
+    timestamp: number;
+    latitude: number;
+    longitude: number;
+    altitude: number;
+  },
   newStatus: number
 ): Promise<Favorite> => {
   return new Promise((resolve, reject) => {
     try {
-      const referenceData = JSON.stringify({ date });
+      const referenceData = JSON.stringify(issData);
       const favoritesData = localStorage.getItem("favorites");
       const favorites: Favorite[] = favoritesData
         ? JSON.parse(favoritesData)
@@ -135,7 +148,7 @@ const upsertApodFavoriteInLocalStorage = (
       const existingIndex = favorites.findIndex(
         (fav) =>
           fav.userId === userId &&
-          fav.type === "apod" &&
+          fav.type === "iss" &&
           JSON.stringify(
             typeof fav.referenceData === "string"
               ? JSON.parse(fav.referenceData)
@@ -152,7 +165,7 @@ const upsertApodFavoriteInLocalStorage = (
         result = {
           id: Date.now().toString(),
           userId,
-          type: "apod",
+          type: "iss",
           referenceData,
           createdAt: new Date(),
           isFavorite: newStatus,
@@ -168,19 +181,17 @@ const upsertApodFavoriteInLocalStorage = (
   });
 };
 
-const upsertMarsRoverFavoriteInLocalStorage = (
+const upsertSolarSystemFavoriteInLocalStorage = (
   userId: string,
-  roverData: {
-    photoId: string;
-    rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-    sol: number;
-    camera: string;
+  solarSystemData: {
+    bodyId: string;
+    bodyName: string;
   },
   newStatus: number
 ): Promise<Favorite> => {
   return new Promise((resolve, reject) => {
     try {
-      const referenceData = JSON.stringify(roverData);
+      const referenceData = JSON.stringify(solarSystemData);
       const favoritesData = localStorage.getItem("favorites");
       const favorites: Favorite[] = favoritesData
         ? JSON.parse(favoritesData)
@@ -189,7 +200,7 @@ const upsertMarsRoverFavoriteInLocalStorage = (
       const existingIndex = favorites.findIndex(
         (fav) =>
           fav.userId === userId &&
-          fav.type === "mars_rover" &&
+          fav.type === "solar_system" &&
           JSON.stringify(
             typeof fav.referenceData === "string"
               ? JSON.parse(fav.referenceData)
@@ -206,7 +217,7 @@ const upsertMarsRoverFavoriteInLocalStorage = (
         result = {
           id: Date.now().toString(),
           userId,
-          type: "mars_rover",
+          type: "solar_system",
           referenceData,
           createdAt: new Date(),
           isFavorite: newStatus,

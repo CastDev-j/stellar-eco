@@ -14,17 +14,18 @@ interface ToggleNasaImageProps extends BaseToggleProps {
   nasaId: string;
 }
 
-interface ToggleApodProps extends BaseToggleProps {
-  type: "apod";
-  date: string;
+interface ToggleISSProps extends BaseToggleProps {
+  type: "iss";
+  timestamp: number;
+  latitude: number;
+  longitude: number;
+  altitude: number;
 }
 
-interface ToggleMarsRoverProps extends BaseToggleProps {
-  type: "mars_rover";
-  photoId: string;
-  rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-  sol: number;
-  camera: string;
+interface ToggleSolarSystemProps extends BaseToggleProps {
+  type: "solar_system";
+  bodyId: string;
+  bodyName: string;
 }
 
 interface ToggleEpicProps extends BaseToggleProps {
@@ -34,8 +35,8 @@ interface ToggleEpicProps extends BaseToggleProps {
 
 type ToggleFavoriteProps =
   | ToggleNasaImageProps
-  | ToggleApodProps
-  | ToggleMarsRoverProps
+  | ToggleISSProps
+  | ToggleSolarSystemProps
   | ToggleEpicProps;
 
 export async function toggleFavorite(
@@ -47,17 +48,24 @@ export async function toggleFavorite(
     case "image_library":
       return upsertNasaImageVideoFavorite(userId, props.nasaId, newStatus);
 
-    case "apod":
-      return upsertApodFavorite(userId, props.date, newStatus);
-
-    case "mars_rover":
-      return upsertMarsRoverFavorite(
+    case "iss":
+      return upsertISSFavorite(
         userId,
         {
-          photoId: props.photoId,
-          rover: props.rover,
-          sol: props.sol,
-          camera: props.camera,
+          timestamp: props.timestamp,
+          latitude: props.latitude,
+          longitude: props.longitude,
+          altitude: props.altitude,
+        },
+        newStatus
+      );
+
+    case "solar_system":
+      return upsertSolarSystemFavorite(
+        userId,
+        {
+          bodyId: props.bodyId,
+          bodyName: props.bodyName,
         },
         newStatus
       );
@@ -98,18 +106,23 @@ const upsertNasaImageVideoFavorite = async (
   return result;
 };
 
-const upsertApodFavorite = async (
+const upsertISSFavorite = async (
   userId: string,
-  date: string,
+  issData: {
+    timestamp: number;
+    latitude: number;
+    longitude: number;
+    altitude: number;
+  },
   newStatus: number
 ): Promise<Favorite> => {
-  const referenceData = JSON.stringify({ date });
+  const referenceData = JSON.stringify(issData);
 
   const [result] = await db
     .insert(favoritesTable)
     .values({
       userId,
-      type: "apod",
+      type: "iss",
       referenceData,
       isFavorite: newStatus,
     })
@@ -126,23 +139,21 @@ const upsertApodFavorite = async (
   return result;
 };
 
-const upsertMarsRoverFavorite = async (
+const upsertSolarSystemFavorite = async (
   userId: string,
-  roverData: {
-    photoId: string;
-    rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-    sol: number;
-    camera: string;
+  solarSystemData: {
+    bodyId: string;
+    bodyName: string;
   },
   newStatus: number
 ): Promise<Favorite> => {
-  const referenceData = JSON.stringify(roverData);
+  const referenceData = JSON.stringify(solarSystemData);
 
   const [result] = await db
     .insert(favoritesTable)
     .values({
       userId,
-      type: "mars_rover",
+      type: "solar_system",
       referenceData,
       isFavorite: newStatus,
     })

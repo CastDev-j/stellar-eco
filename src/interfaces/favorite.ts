@@ -4,15 +4,16 @@ import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 export type Favorite = InferSelectModel<typeof favoritesTable>;
 export type NewFavorite = InferInsertModel<typeof favoritesTable>;
 
-export interface APODReference {
-  date: string;
+export interface ISSReference {
+  timestamp: number;
+  latitude: number;
+  longitude: number;
+  altitude: number;
 }
 
-export interface MarsRoverReference {
-  rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-  sol: number;
-  camera: string;
-  photoId: string;
+export interface SolarSystemReference {
+  bodyId: string;
+  bodyName: string;
 }
 
 export interface EPICReference {
@@ -24,19 +25,19 @@ export interface ImageLibraryReference {
 }
 
 export type ReferenceData =
-  | APODReference
-  | MarsRoverReference
+  | ISSReference
+  | SolarSystemReference
   | EPICReference
   | ImageLibraryReference;
 
-export type APODFavorite = Favorite & {
-  type: "apod";
-  referenceData: APODReference;
+export type ISSFavorite = Favorite & {
+  type: "iss";
+  referenceData: ISSReference;
 };
 
-export type MarsRoverFavorite = Favorite & {
-  type: "mars_rover";
-  referenceData: MarsRoverReference;
+export type SolarSystemFavorite = Favorite & {
+  type: "solar_system";
+  referenceData: SolarSystemReference;
 };
 
 export type EPICFavorite = Favorite & {
@@ -50,7 +51,7 @@ export type ImageLibraryFavorite = Favorite & {
 };
 
 export type TypedFavorite =
-  | APODFavorite
-  | MarsRoverFavorite
+  | ISSFavorite
+  | SolarSystemFavorite
   | EPICFavorite
   | ImageLibraryFavorite;

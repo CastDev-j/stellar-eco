@@ -7,17 +7,18 @@ interface GetNasaImageFavoriteProps extends BaseGetFavoriteProps {
   nasaId: string;
 }
 
-interface GetApodFavoriteProps extends BaseGetFavoriteProps {
-  type: "apod";
-  date: string;
+interface GetISSFavoriteProps extends BaseGetFavoriteProps {
+  type: "iss";
+  timestamp: number;
+  latitude: number;
+  longitude: number;
+  altitude: number;
 }
 
-interface GetMarsRoverFavoriteProps extends BaseGetFavoriteProps {
-  type: "mars_rover";
-  photoId: string;
-  rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-  sol: number;
-  camera: string;
+interface GetSolarSystemFavoriteProps extends BaseGetFavoriteProps {
+  type: "solar_system";
+  bodyId: string;
+  bodyName: string;
 }
 
 interface GetEpicFavoriteProps extends BaseGetFavoriteProps {
@@ -27,8 +28,8 @@ interface GetEpicFavoriteProps extends BaseGetFavoriteProps {
 
 type GetIsFavoriteProps =
   | GetNasaImageFavoriteProps
-  | GetApodFavoriteProps
-  | GetMarsRoverFavoriteProps
+  | GetISSFavoriteProps
+  | GetSolarSystemFavoriteProps
   | GetEpicFavoriteProps;
 
 export function getIsFavoriteFromLocalStorage(
@@ -40,15 +41,18 @@ export function getIsFavoriteFromLocalStorage(
     case "image_library":
       return getNasaImageFavoriteStatusFromLocalStorage(userId, props.nasaId);
 
-    case "apod":
-      return getApodFavoriteStatusFromLocalStorage(userId, props.date);
+    case "iss":
+      return getISSFavoriteStatusFromLocalStorage(userId, {
+        timestamp: props.timestamp,
+        latitude: props.latitude,
+        longitude: props.longitude,
+        altitude: props.altitude,
+      });
 
-    case "mars_rover":
-      return getMarsRoverFavoriteStatusFromLocalStorage(userId, {
-        photoId: props.photoId,
-        rover: props.rover,
-        sol: props.sol,
-        camera: props.camera,
+    case "solar_system":
+      return getSolarSystemFavoriteStatusFromLocalStorage(userId, {
+        bodyId: props.bodyId,
+        bodyName: props.bodyName,
       });
 
     case "epic":
@@ -95,13 +99,18 @@ const getNasaImageFavoriteStatusFromLocalStorage = (
   });
 };
 
-const getApodFavoriteStatusFromLocalStorage = (
+const getISSFavoriteStatusFromLocalStorage = (
   userId: string,
-  date: string
+  issData: {
+    timestamp: number;
+    latitude: number;
+    longitude: number;
+    altitude: number;
+  }
 ): Promise<number> => {
   return new Promise((resolve) => {
     try {
-      const referenceData = JSON.stringify({ date });
+      const referenceData = JSON.stringify(issData);
       const favoritesData = localStorage.getItem("favorites");
 
       if (!favoritesData) {
@@ -114,7 +123,7 @@ const getApodFavoriteStatusFromLocalStorage = (
         ? favorites.find(
             (fav: any) =>
               fav.userId === userId &&
-              fav.type === "apod" &&
+              fav.type === "iss" &&
               JSON.stringify(
                 typeof fav.referenceData === "string"
                   ? JSON.parse(fav.referenceData)
@@ -125,24 +134,22 @@ const getApodFavoriteStatusFromLocalStorage = (
 
       resolve(result?.isFavorite ?? 0);
     } catch (error) {
-      console.error("Error getting APOD favorite status:", error);
+      console.error("Error getting ISS favorite status:", error);
       resolve(0);
     }
   });
 };
 
-const getMarsRoverFavoriteStatusFromLocalStorage = (
+const getSolarSystemFavoriteStatusFromLocalStorage = (
   userId: string,
-  roverData: {
-    photoId: string;
-    rover: "curiosity" | "opportunity" | "spirit" | "perseverance";
-    sol: number;
-    camera: string;
+  solarSystemData: {
+    bodyId: string;
+    bodyName: string;
   }
 ): Promise<number> => {
   return new Promise((resolve) => {
     try {
-      const referenceData = JSON.stringify(roverData);
+      const referenceData = JSON.stringify(solarSystemData);
       const favoritesData = localStorage.getItem("favorites");
 
       if (!favoritesData) {
@@ -155,7 +162,7 @@ const getMarsRoverFavoriteStatusFromLocalStorage = (
         ? favorites.find(
             (fav: any) =>
               fav.userId === userId &&
-              fav.type === "mars_rover" &&
+              fav.type === "solar_system" &&
               JSON.stringify(
                 typeof fav.referenceData === "string"
                   ? JSON.parse(fav.referenceData)
@@ -166,7 +173,7 @@ const getMarsRoverFavoriteStatusFromLocalStorage = (
 
       resolve(result?.isFavorite ?? 0);
     } catch (error) {
-      console.error("Error getting Mars Rover favorite status:", error);
+      console.error("Error getting Solar System favorite status:", error);
       resolve(0);
     }
   });

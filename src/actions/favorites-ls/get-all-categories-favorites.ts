@@ -1,12 +1,12 @@
 import {
-  APODFavorite,
-  APODReference,
+  ISSFavorite,
+  ISSReference,
+  SolarSystemFavorite,
+  SolarSystemReference,
   EPICFavorite,
   EPICReference,
   ImageLibraryFavorite,
   ImageLibraryReference,
-  MarsRoverFavorite,
-  MarsRoverReference,
 } from "@/interfaces/favorite";
 import { CategorizedFavorites } from "../favorites/get-all-categories-favorites";
 
@@ -14,8 +14,8 @@ export const getAllCategoriesFavoritesFromLocalStorage =
   (): Promise<CategorizedFavorites> => {
     return new Promise((resolve) => {
       const categorized: CategorizedFavorites = {
-        apod: [],
-        marsRover: [],
+        iss: [],
+        solarSystem: [],
         epic: [],
         imageLibrary: [],
       };
@@ -41,17 +41,17 @@ export const getAllCategoriesFavoritesFromLocalStorage =
               : row.referenceData;
 
           switch (row.type) {
-            case "apod":
-              categorized.apod.push({
+            case "iss":
+              categorized.iss.push({
                 ...row,
-                referenceData: parsedReferenceData as APODReference,
-              } as APODFavorite);
+                referenceData: parsedReferenceData as ISSReference,
+              } as ISSFavorite);
               break;
-            case "mars_rover":
-              categorized.marsRover.push({
+            case "solar_system":
+              categorized.solarSystem.push({
                 ...row,
-                referenceData: parsedReferenceData as MarsRoverReference,
-              } as MarsRoverFavorite);
+                referenceData: parsedReferenceData as SolarSystemReference,
+              } as SolarSystemFavorite);
               break;
             case "epic":
               categorized.epic.push({

@@ -17,7 +17,7 @@ export const Container: FC<ContainerProps> = ({
   return (
     <div
       className={cn(
-        "container mx-auto",
+        "container mx-auto ",
         padding ? "px-4 py-6 md:px-8 md:py-8" : "px-0",
         animated &&
           "animate-fade animate-once animate-duration-300 animate-ease-in",

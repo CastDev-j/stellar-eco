@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 
 const SolarSystemLoading = () => {
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8" padding={false}>
       <section className="space-y-4">
         <Skeleton className="h-8 w-72 rounded-lg" />
 

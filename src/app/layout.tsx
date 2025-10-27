@@ -76,7 +76,7 @@ export default function RootLayout({
       <body className="flex flex-col justify-between min-h-screen">
         <AppProviders>
           <Header />
-          <div className="sm:p-4 p-2">{children}</div>
+          {children}
           <Footer />
         </AppProviders>
       </body>

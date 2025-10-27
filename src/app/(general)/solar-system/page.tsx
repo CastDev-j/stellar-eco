@@ -10,7 +10,7 @@ export default async function ApodPage() {
   const solarSystem = userId ? await getSolarSystemFavorites() : null;
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8 min-h-[85vh]">
       <SolarSystemComponent initialFavorites={solarSystem} />
     </Container>
   );

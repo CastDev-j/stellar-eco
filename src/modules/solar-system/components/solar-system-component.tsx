@@ -146,7 +146,7 @@ const SolarSystemComponent = ({ initialFavorites }: Props) => {
   if (!bodies) return null;
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8" padding={false}>
       <section className="space-y-4">
         <Subtitle variant="h4">Planetas del Sistema Solar</Subtitle>
 

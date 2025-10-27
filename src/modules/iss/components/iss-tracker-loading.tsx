@@ -114,7 +114,7 @@ const IssTrackerLoading = () => {
       </div>
 
       <div ref={titleRef} className="space-y-2 opacity-0">
-        <Title variant="h3" align="center" className="text-indigo-400">
+        <Title variant="h3" align="center" className="text-indigo-50">
           Localizando ISS
         </Title>
       </div>
@@ -123,7 +123,7 @@ const IssTrackerLoading = () => {
         <Paragraph
           size="base"
           align="center"
-          className="max-w-md text-indigo-300"
+          className="max-w-md text-indigo-50"
         >
           Conectando con satélite en órbita...
         </Paragraph>

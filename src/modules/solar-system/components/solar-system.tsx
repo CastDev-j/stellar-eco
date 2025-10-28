@@ -9,6 +9,7 @@ interface SolarSystemProps {
   onPlanetClick?: (name: string, info: string, position: THREE.Vector3) => void;
   scale?: number;
   selectedPlanetName?: string | null;
+  isLoadingBodies?: boolean;
 }
 
 interface CameraControlRef {
@@ -96,6 +97,7 @@ const SolarSystem = ({
   onPlanetClick,
   scale = 1,
   selectedPlanetName,
+  isLoadingBodies = false,
 }: SolarSystemProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showLabels, setShowLabels] = useState(false);
@@ -262,9 +264,16 @@ const SolarSystem = ({
   }, [scale]);
 
   useEffect(() => {
+    // Si los datos todavía se están cargando, esperar a que terminen
+    if (isLoadingBodies) {
+      setIsLoaded(false);
+      return;
+    }
+
+    // Una vez que los datos están listos, esperar 1 segundo antes de mostrar
     const timer = setTimeout(() => setIsLoaded(true), 1000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isLoadingBodies]);
 
   useEffect(() => {
     if (isLoaded && overlayRef.current) {

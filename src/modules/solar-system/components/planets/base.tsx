@@ -230,7 +230,8 @@ export const BasePlanet: React.FC<BasePlanetProps> = ({
     }
 
     if (planetRef.current && rotationSpeed > 0) {
-      planetRef.current.rotation.y += rotationSpeed;
+      const deltaTime = state.clock.getDelta();
+      planetRef.current.rotation.y += rotationSpeed * deltaTime;
     }
   });
 

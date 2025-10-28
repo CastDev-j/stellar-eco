@@ -172,8 +172,6 @@ const SolarSystemComponent = ({ initialFavorites }: Props) => {
     );
   };
 
-  if (isLoading) return <SolarSystemLoading />;
-
   if (error) {
     return (
       <QueryError
@@ -183,10 +181,6 @@ const SolarSystemComponent = ({ initialFavorites }: Props) => {
     );
   }
 
-  if (!bodies) return null;
-
-  console.log(bodies);
-
   return (
     <div className="relative w-full h-screen min-h-screen bg-black overflow-hidden">
       <div className="w-full h-full">
@@ -194,6 +188,7 @@ const SolarSystemComponent = ({ initialFavorites }: Props) => {
           scale={0.3}
           onPlanetClick={handlePlanetSelected}
           selectedPlanetName={selectedBody?.name}
+          isLoadingBodies={isLoading}
         />
       </div>
 

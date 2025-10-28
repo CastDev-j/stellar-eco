@@ -10,7 +10,7 @@ import { Paragraph } from "@/components/ui/paragraph";
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(MorphSVGPlugin);
 
-const fillColor = "oklch(58.5% 0.233 277.117)";
+const fillColor = "oklch(96.2% 0.018 272.314)";
 
 export default function Loading() {
   const startRef = useRef<SVGPathElement>(null!);

@@ -25,7 +25,7 @@ const LoadingManager = ({ onLoaded }: { onLoaded: () => void }) => {
   return null;
 };
 
-const AnimatedEarth = () => {
+export const AnimatedEarth = () => {
   const earthRef = useRef<THREE.Mesh>(null!);
   const atmosphereRef = useRef<THREE.Mesh>(null!);
 

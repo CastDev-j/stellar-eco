@@ -10,9 +10,9 @@ import { Paragraph } from "@/components/ui/paragraph";
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(MorphSVGPlugin);
 
-const fillColor = "oklch(96.2% 0.018 272.314)";
+const fillColor = "oklch(58.5% 0.233 277.117)";
 
-const SolarSystemLoading = () => {
+export default function Loading() {
   const startRef = useRef<SVGPathElement>(null!);
   const endRef = useRef<SVGPathElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -130,6 +130,4 @@ const SolarSystemLoading = () => {
       </div>
     </div>
   );
-};
-
-export default SolarSystemLoading;
+}

@@ -1,21 +1,27 @@
 "use client";
 
-import type { NewFavorite, ReferenceData } from "@/interfaces/favorite";
 import { useRef, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Button from "./ui/button";
 import { sleep } from "@/lib/sleep";
+import { cn } from "@/lib/cn";
 
 interface Props {
   isFavorite?: number | null;
   onFavoriteChange?: (isFavorite: number) => void;
   showText?: boolean;
+  blackMode?: boolean;
 }
 
 const FavoriteButton = (props: Props) => {
-  const { isFavorite = null, onFavoriteChange, showText = true } = props;
+  const {
+    isFavorite = null,
+    onFavoriteChange,
+    showText = true,
+    blackMode = false,
+  } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -166,28 +172,85 @@ const FavoriteButton = (props: Props) => {
       onMouseLeave={handleMouseLeave}
       disabled={isLoading}
       variant="ghost"
-      className={`relative flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 overflow-visible ${
-        isFavorite
-          ? "hover:bg-yellow-50 bg-yellow-50 text-yellow-400 ring-yellow-200 focus:ring-yellow-200 hover:ring-2 hover:ring-offset-2"
-          : "bg-stone-50 hover:bg-stone-50 text-stone-400 ring-stone-200 focus:ring-stone-200 border border-stone-200/50 hover:ring-2 hover:ring-offset-2"
-      } ${isLoading ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
+      className={cn(
+        "relative flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 overflow-visible",
+        isLoading && "opacity-70 cursor-not-allowed",
+        !isLoading && "cursor-pointer",
+        !blackMode &&
+          isFavorite && [
+            "bg-yellow-50",
+            "text-yellow-400",
+            "hover:bg-yellow-50",
+            "ring-yellow-200",
+            "focus:ring-yellow-200",
+            "hover:ring-2",
+            "hover:ring-offset-2",
+          ],
+        !blackMode &&
+          !isFavorite && [
+            "bg-stone-50",
+            "hover:bg-stone-50",
+            "text-stone-400",
+            "ring-stone-200",
+            "focus:ring-stone-200",
+            "border",
+            "border-stone-200/50",
+            "hover:ring-2",
+            "hover:ring-offset-2",
+          ],
+        blackMode &&
+          isFavorite && [
+            "bg-yellow-950/30",
+            "text-yellow-400",
+            "hover:bg-yellow-950/40",
+            "ring-yellow-500/30",
+            "focus:ring-yellow-500/30",
+            "border",
+            "border-yellow-500/20",
+            "hover:ring-2",
+            "hover:ring-offset-2",
+            "hover:ring-offset-stone-950",
+          ],
+        blackMode &&
+          !isFavorite && [
+            "bg-stone-900/50",
+            "hover:bg-stone-800/50",
+            "text-stone-500",
+            "ring-stone-700/50",
+            "focus:ring-stone-700/50",
+            "border",
+            "border-stone-800/50",
+            "hover:ring-2",
+            "hover:ring-offset-2",
+            "hover:ring-offset-stone-950",
+          ]
+      )}
       aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
     >
       <div ref={sparklesRef} className="absolute inset-0 pointer-events-none" />
 
       <div ref={starRef} className="relative transition-transform duration-300">
         <FaStar
-          className={`w-5 h-5 transition-all duration-300 ${
-            isFavorite ? "fill-current" : "text-stone-400 hover:text-yellow-400"
-          } ${isLoading ? "animate-pulse" : ""}`}
+          className={cn(
+            "w-5 h-5 transition-all duration-300",
+            isLoading && "animate-pulse",
+            !blackMode && isFavorite && "fill-current",
+            !blackMode && !isFavorite && "text-stone-400 hover:text-yellow-400",
+            blackMode && isFavorite && "fill-current text-yellow-400",
+            blackMode && !isFavorite && "text-stone-500 hover:text-yellow-400"
+          )}
         />
       </div>
 
       {showText && (
         <span
-          className={`font-medium text-sm transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${
-            isFavorite ? "text-yellow-700" : "text-stone-600"
-          }`}
+          className={cn(
+            "font-medium text-sm transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap",
+            !blackMode && isFavorite && "text-yellow-700",
+            !blackMode && !isFavorite && "text-stone-600",
+            blackMode && isFavorite && "text-yellow-400",
+            blackMode && !isFavorite && "text-stone-400"
+          )}
         >
           {isFavorite ? "En favoritos" : "Agregar a favoritos"}
         </span>

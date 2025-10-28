@@ -250,7 +250,7 @@ const SolarSystem = ({
   useEffect(() => {
     const updateCameraPosition = () => {
       const width = window.innerWidth;
-      if (width < 640) setCameraPosition([32 * scale, 12 * scale, 32 * scale]);
+      if (width < 640) setCameraPosition([32 * scale, 18 * scale, 32 * scale]);
       else if (width < 1024)
         setCameraPosition([28 * scale, 11 * scale, 28 * scale]);
       else if (width < 1536)

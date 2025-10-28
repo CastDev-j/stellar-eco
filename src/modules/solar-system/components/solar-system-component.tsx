@@ -195,26 +195,26 @@ const SolarSystemComponent = ({ initialFavorites }: Props) => {
       {selectedBody && (
         <div
           ref={infoRef}
-          className="fixed bottom-6 left-6 z-30 animate-slide-up"
+          className="fixed bottom-6 left-6 right-6 md:right-auto md:bottom-6 z-30 animate-slide-up md:max-w-sm"
         >
-          <div className="bg-neutral-950/90 backdrop-blur-md text-stone-50 p-6 rounded-xl border border-stone-800/40 max-w-sm shadow-2xl">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold">
+          <div className="bg-neutral-950/90 backdrop-blur-md text-stone-50 p-4 md:p-6 rounded-xl border border-stone-800/40 shadow-2xl max-h-[40vh] md:max-h-none overflow-y-auto">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <h3 className="text-lg md:text-xl font-semibold truncate">
                 {selectedBody.body.englishName}
               </h3>
               <button
                 onClick={() => setSelectedBody(null)}
-                className="text-stone-400 hover:text-stone-200 transition-colors text-lg"
+                className="text-stone-400 hover:text-stone-200 transition-colors text-lg ml-2 shrink-0"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-stone-300 text-sm leading-relaxed mb-4 line-clamp-3">
+            <p className="text-stone-300 text-xs md:text-sm leading-relaxed mb-3 md:mb-4 line-clamp-2 md:line-clamp-3">
               {selectedBody.info}
             </p>
 
-            <div className="space-y-2 mb-4">
+            <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
               {selectedBody.body.meanRadius && (
                 <div className="flex justify-between text-xs">
                   <span className="text-stone-400">Radio</span>

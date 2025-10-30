@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import getSolarSystemBodies, {
   type SolarSystemBody,
 } from "@/actions/solar-system/get-solar-system-bodies";
-import SolarSystemLoading from "./solar-system-loader";
 import QueryError from "@/components/ui/error";
 import FavoriteButton from "@/components/favorite-button";
 import { useAuth } from "@clerk/nextjs";
@@ -26,6 +25,25 @@ interface SelectedPlanetInfo {
   info: string;
   position: THREE.Vector3;
 }
+
+const PLANET_INFO_MAP: Record<string, string> = {
+  Sun: "El Sol es la estrella central de nuestro Sistema Solar. Es una esfera de plasma caliente que proporciona luz y calor a todos los planetas. Su masa representa el 99.86% de la masa total del Sistema Solar.",
+  Mercury:
+    "Mercurio es el planeta más pequeño y cercano al Sol. Su superficie está cubierta de cráteres y experimenta temperaturas desde -173°C hasta 427°C.",
+  Venus:
+    "Venus tiene una atmósfera densa de CO₂ con nubes de ácido sulfúrico. Es el planeta más caliente del Sistema Solar con 462°C en superficie debido al efecto invernadero extremo.",
+  Earth:
+    "La Tierra es el único planeta conocido con vida. El 71% de su superficie está cubierta de agua líquida. Tiene una atmósfera rica en nitrógeno y oxígeno que protege la vida.",
+  Mars: "Marte, el planeta rojo, tiene los volcanes más grandes del Sistema Solar (Monte Olimpo) y evidencia de agua líquida antigua. Tiene dos lunas: Fobos y Deimos.",
+  Jupiter:
+    "Júpiter es el planeta más grande del Sistema Solar. Su Gran Mancha Roja es una tormenta anticiclónica más grande que la Tierra que ha durado al menos 350 años.",
+  Saturn:
+    "Saturno es famoso por sus espectaculares anillos compuestos principalmente de partículas de hielo y roca. Es el planeta menos denso, podría flotar en agua.",
+  Uranus:
+    "Urano rota de lado con un eje de inclinación de 98°. Su atmósfera contiene metano que le da su característico color azul verdoso.",
+  Neptune:
+    "Neptuno tiene los vientos más rápidos del Sistema Solar, alcanzando velocidades de hasta 2,100 km/h. Es el planeta más alejado del Sol desde que Plutón fue reclasificado.",
+};
 
 const SolarSystemComponent = ({ initialFavorites }: Props) => {
   const { userId } = useAuth();
@@ -165,9 +183,11 @@ const SolarSystemComponent = ({ initialFavorites }: Props) => {
     }
 
     const nextBody = bodies[nextIndex];
+    const nextBodyInfo =
+      PLANET_INFO_MAP[nextBody.englishName] || selectedBody.info;
     handlePlanetSelected(
       nextBody.englishName,
-      selectedBody.info,
+      nextBodyInfo,
       selectedBody.position
     );
   };

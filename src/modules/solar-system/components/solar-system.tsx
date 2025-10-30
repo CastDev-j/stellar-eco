@@ -264,13 +264,11 @@ const SolarSystem = ({
   }, [scale]);
 
   useEffect(() => {
-    // Si los datos todavía se están cargando, esperar a que terminen
     if (isLoadingBodies) {
       setIsLoaded(false);
       return;
     }
 
-    // Una vez que los datos están listos, esperar 1 segundo antes de mostrar
     const timer = setTimeout(() => setIsLoaded(true), 1000);
     return () => clearTimeout(timer);
   }, [isLoadingBodies]);
@@ -333,7 +331,6 @@ const SolarSystem = ({
             minPolarAngle={Math.PI / 6}
           />
 
-          {/* Sol en el centro */}
           <pointLight
             position={[0, 0, 0]}
             intensity={8}

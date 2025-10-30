@@ -10,15 +10,15 @@ interface PlanetMenuItem {
 
 const PLANETS: PlanetMenuItem[] = [
   { name: "Todos", englishName: "" },
-  { name: "☀️ Sol", englishName: "Sun" },
-  { name: "☿️ Mercurio", englishName: "Mercury" },
-  { name: "♀️ Venus", englishName: "Venus" },
-  { name: "🌍 Tierra", englishName: "Earth" },
-  { name: "♂️ Marte", englishName: "Mars" },
-  { name: "♃ Júpiter", englishName: "Jupiter" },
-  { name: "♄ Saturno", englishName: "Saturn" },
-  { name: "♅ Urano", englishName: "Uranus" },
-  { name: "♆ Neptuno", englishName: "Neptune" },
+  { name: "Sol", englishName: "Sun" },
+  { name: "Mercurio", englishName: "Mercury" },
+  { name: "Venus", englishName: "Venus" },
+  { name: "Tierra", englishName: "Earth" },
+  { name: "Marte", englishName: "Mars" },
+  { name: "Júpiter", englishName: "Jupiter" },
+  { name: "Saturno", englishName: "Saturn" },
+  { name: "Urano", englishName: "Uranus" },
+  { name: "Neptuno", englishName: "Neptune" },
 ];
 
 interface PlanetNavigationMenuProps {
@@ -42,7 +42,6 @@ export default function PlanetNavigationMenu({
 
   return (
     <div className="fixed top-6 right-6 z-40">
-      {/* Versión Desktop */}
       <div className="hidden md:flex gap-2 flex-wrap justify-end max-w-xs">
         {PLANETS.map((planet) => (
           <button
@@ -58,8 +57,7 @@ export default function PlanetNavigationMenu({
           </button>
         ))}
       </div>
-
-      {/* Versión Mobile */}
+      ={" "}
       <div className="md:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}

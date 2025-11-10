@@ -217,7 +217,7 @@ const SolarSystemComponent = ({ initialFavorites }: Props) => {
           ref={infoRef}
           className="fixed bottom-6 left-6 right-6 md:right-auto md:bottom-6 z-30 animate-slide-up md:max-w-sm"
         >
-          <div className="bg-neutral-950/90 backdrop-blur-md text-stone-50 p-4 md:p-6 rounded-xl border border-stone-800/40 shadow-2xl max-h-[40vh] md:max-h-none overflow-y-auto">
+          <div className="bg-neutral-950/90 backdrop-blur-md text-stone-50 p-4 md:p-6 rounded-xl border border-stone-800/40 shadow-2xl max-h-[40vh] md:max-h-none overflow-y-hidden">
             <div className="flex items-center justify-between mb-3 md:mb-4">
               <h3 className="text-lg md:text-xl font-semibold truncate">
                 {selectedBody.body.englishName}

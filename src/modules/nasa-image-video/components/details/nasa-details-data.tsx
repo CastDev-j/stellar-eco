@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { toggleFavorite } from "@/actions/favorites/toggle-favorite";
 import { toggleFavoriteInLocalStorage } from "@/actions/favorites-ls/toggle-favorite";
 import { getIsFavoriteFromLocalStorage } from "@/actions/favorites-ls/get-is-favorite";
+import { useQuery } from "@tanstack/react-query";
 
 interface Props {
   data: NASAImageAndVideoByID;
@@ -43,10 +44,28 @@ const pickImageHref = (
   return links[0]?.href;
 };
 
+const fetchVideoUrl = async (href: string): Promise<string | null> => {
+  try {
+    const response = await fetch(href);
+    const data = await response.json();
+
+    const mp4Video = data.find((item: string) =>
+      item.toLowerCase().endsWith(".mp4")
+    );
+
+    return mp4Video || null;
+  } catch (error) {
+    console.error("Error fetching video:", error);
+    return null;
+  }
+};
+
 const NasaDetailsData = ({ data, initialState }: Props) => {
   const [isFavorite, setIsFavorite] = useState(initialState);
   const router = useRouter();
   const { userId } = useAuth();
+
+  console.log(data);
 
   const handleGoBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1) {
@@ -81,6 +100,15 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
   const entry = items[0]?.data?.[0];
   const img = pickImageHref(items[0]?.links);
   const nasaId = entry?.nasa_id || "";
+  const href = items[0]?.href || "";
+  const isVideo = entry?.media_type === "video";
+
+  const { data: videoUrl, isLoading: isLoadingVideo } = useQuery({
+    queryKey: ["video", href],
+    queryFn: () => fetchVideoUrl(href),
+    enabled: isVideo && !!href,
+    staleTime: 1000 * 60 * 60,
+  });
 
   const handleFavoriteChange = async (isFavorite: number) => {
     if (userId) {
@@ -117,7 +145,7 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
       }
     };
     checkFavoriteStatus();
-  }, [nasaId]);
+  }, [nasaId, userId]);
 
   return (
     <div className="min-h-screen">
@@ -136,7 +164,7 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
 
       <div className="container mx-auto py-8 md:py-12">
         <article className="max-w-5xl mx-auto">
-          {img && (
+          {img && !isVideo && (
             <div className="w-full aspect-video md:aspect-21/9 rounded-sm overflow-hidden mb-8">
               <img
                 src={img}
@@ -146,26 +174,36 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
             </div>
           )}
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-900  mb-6 leading-tight">
+          {isVideo && img && (
+            <div className="w-full aspect-video md:aspect-21/9 rounded-sm overflow-hidden mb-8">
+              <img
+                src={img}
+                alt={entry?.title || entry?.nasa_id || "NASA video thumbnail"}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-900 mb-6 leading-tight">
             {entry?.title}
           </h1>
 
-          <div className="flex flex-wrap gap-4 md:gap-6 mb-8 text-stone-600 ">
+          <div className="flex flex-wrap gap-4 md:gap-6 mb-8 text-stone-600">
             {entry?.center && (
               <div className="flex items-center gap-2">
-                <IoLocationOutline className="size-5 text-indigo-600 " />
+                <IoLocationOutline className="size-5 text-indigo-600" />
                 <span className="font-medium">{entry.center}</span>
               </div>
             )}
             {entry?.date_created && (
               <div className="flex items-center gap-2">
-                <IoCalendarOutline className="size-5 text-indigo-600 " />
+                <IoCalendarOutline className="size-5 text-indigo-600" />
                 <span>{formatDate(entry.date_created)}</span>
               </div>
             )}
             {entry?.media_type && (
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1 bg-indigo-100 /30 text-indigo-700  rounded-full text-sm font-medium capitalize">
+                <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium capitalize">
                   {entry.media_type}
                 </span>
               </div>
@@ -173,23 +211,46 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
           </div>
 
           {entry?.description && (
-            <div className="prose prose-stone -w-none mb-8">
-              <p className="text-lg leading-relaxed text-stone-700 ">
+            <div className="prose prose-stone max-w-none mb-8">
+              <p className="text-lg leading-relaxed text-stone-700">
                 {entry.description}
               </p>
             </div>
           )}
 
+          {isVideo && (
+            <div className="mb-8">
+              {isLoadingVideo && (
+                <div className="w-full aspect-video rounded-sm bg-stone-100 flex items-center justify-center">
+                  <p className="text-stone-500">Cargando video...</p>
+                </div>
+              )}
+              {!isLoadingVideo && videoUrl && (
+                <div className="w-full aspect-video rounded-sm overflow-hidden bg-black">
+                  <video controls className="w-full h-full" poster={img}>
+                    <source src={videoUrl} type="video/mp4" />
+                    Tu navegador no soporta la reproducción de videos.
+                  </video>
+                </div>
+              )}
+              {!isLoadingVideo && !videoUrl && (
+                <div className="w-full aspect-video rounded-sm bg-stone-100 flex items-center justify-center">
+                  <p className="text-stone-500">Video no disponible</p>
+                </div>
+              )}
+            </div>
+          )}
+
           {entry?.keywords && entry.keywords.length > 0 && (
             <div className="mb-8">
-              <h2 className="text-sm font-semibold text-stone-500  uppercase tracking-wide mb-3">
+              <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wide mb-3">
                 Etiquetas
               </h2>
               <div className="flex flex-wrap gap-2">
                 {entry.keywords.map((k, i) => (
                   <span
                     key={i}
-                    className="text-sm bg-stone-100  text-stone-700  px-3 py-1.5 rounded-full hover:bg-stone-200 -700 transition-colors"
+                    className="text-sm bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full hover:bg-stone-200 transition-colors"
                   >
                     {k}
                   </span>
@@ -198,7 +259,7 @@ const NasaDetailsData = ({ data, initialState }: Props) => {
             </div>
           )}
 
-          <div className="pt-6 border-t border-stone-200 ">
+          <div className="pt-6 border-t border-stone-200">
             <div className="flex items-center gap-2 text-sm text-stone-500 min-w-0">
               <span className="shrink-0">ID de NASA:</span>
               <code className="px-2 py-1 bg-stone-100 rounded font-mono text-indigo-600 truncate min-w-0 flex-1">

@@ -115,7 +115,7 @@ const SolarSystemLoading = () => {
 
       <div ref={titleRef} className="space-y-2 opacity-0">
         <Title variant="h3" align="center" className="text-indigo-50">
-          Localizando ISS
+          Buscando Planetas
         </Title>
       </div>
 
@@ -125,7 +125,7 @@ const SolarSystemLoading = () => {
           align="center"
           className="max-w-md text-indigo-50"
         >
-          Conectando con satélite en órbita...
+          Conectando con el universo...
         </Paragraph>
       </div>
     </div>
